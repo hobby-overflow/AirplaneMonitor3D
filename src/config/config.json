@@ -1,0 +1,19 @@
+{
+    "mode": {
+        "map": false,
+        "simulation": true
+    },
+    "map": {
+        "centerLat": 42.882556,
+        "centerLon": 141.577778,
+        "position": {
+            "x": -357.5,
+            "z": 457.75
+        },
+        "scale": 0.31089999999999973
+    },
+    "view": {
+        "pixelDensity": 100,
+        "lineWidth": 8
+    }
+}
