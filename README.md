@@ -1,5 +1,7 @@
 # AirplaneMonitor3D
 
+[日本語README](https://github.com/hobby-overflow/AirplaneMonitor3D/blob/main/README_ja.md)
+
 WIP
 
 
