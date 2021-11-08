@@ -14,7 +14,7 @@
     "dev:tsc": "tsc -w -p tsconfig.main.json",
     "dev:webpack": "webpack --watch",
     "run": "run-p run:*",
-    "run:electron": "wait-on ./dist/index.html && electron .",
+    "run:electron": "wait-on ./dist/index.html && electron . --no-sandbox",
     "run:tsc": "tsc -p tsconfig.main.json",
     "run:webpack": "webpack",
     "run:prerun": "rimraf dist"
