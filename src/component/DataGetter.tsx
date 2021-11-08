@@ -21,8 +21,8 @@ export class DataGetter extends React.Component<{},{acList:any}> {
     
     tick() {
         const virtualRadar = "http://localhost:8080/VirtualRadar/AircraftList.json";
-        const signalSimulator = "http://localhost:8080/json";
-        fetch(signalSimulator, {
+        // const signalSimulator = "http://localhost:8080/json";
+        fetch(virtualRadar, {
             method: "GET"})
         .then(response => response.json())
         .then(json =>  this.setState({ acList: json.acList }))
