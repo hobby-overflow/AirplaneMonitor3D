@@ -5,7 +5,7 @@ WIP
 
 
 このアプリケーションはADSBデータを3Dでプロットします.
-
+![スクリーンショット (79)](https://user-images.githubusercontent.com/48244386/140714343-315cf2a0-e4ec-4f08-b7c4-e67a35943d4f.png)
 
 
 ## 必要な環境
@@ -30,7 +30,12 @@ Linux
 
 自分はR820TのSDR受信機とRTL1090とVirtualRadarServerを使っています
 
-事前にVRSでADSBデータをデコードされていることを確認してください
+接続例
+- [SDRレシーバ]-[RTL1090]-[VRS]-[Airplane3DMonitor]
+
+**事前にVRSでADSBデータをデコードされていることを確認してください**
+
+またVRSでデコードされたデータをもとにプロットするのでVRSに依存しています
 
 
 
@@ -46,11 +51,15 @@ npm install
 npm i
 ```
 
-その後
+## 実行
 
 ```sh
 npm run run
+```
+
 or
+
+```sh
 npm run dev # hot reload
 ```
 
