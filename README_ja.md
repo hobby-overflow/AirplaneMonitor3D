@@ -28,9 +28,7 @@ Linux
 
 
 
-自分はR081TのSDR受信機とRTL1090とVirtualRadarServerを使っています
-
-Run VirtualRadarServer, check receive ADSB signal.
+自分はR820TのSDR受信機とRTL1090とVirtualRadarServerを使っています
 
 事前にVRSでADSBデータをデコードされていることを確認してください
 
