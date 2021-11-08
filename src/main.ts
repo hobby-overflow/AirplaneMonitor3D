@@ -3,13 +3,23 @@ import { BrowserWindow, app, session } from "electron";
 const os = require("os");
 
 // 開発モードの場合はホットリロードする
-require("electron-reload")(__dirname, {
-    electron: path.resolve(
-        __dirname,
-        "../node_modules/electron/dist/electron.exe"
-    ),
-});
+if (process.platform === "win32") {
+    require("electron-reload")(__dirname, {
+        electron: path.resolve(
+            __dirname,
+            "../node_modules/electron/dist/electron.exe"
+        ),
+    });
+}
 
+if (process.platform === "linux") {
+    require("electron-reload")(__dirname, {
+        electron: path.resolve(
+            __dirname,
+            "../node_modules/electron/dist/electron"
+        ),
+    });
+}
 // BrowserWindow インスタンスを作成する関数
 async function createWindow() {
     const mainWindow = new BrowserWindow({
