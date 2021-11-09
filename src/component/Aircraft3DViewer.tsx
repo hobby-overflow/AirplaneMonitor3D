@@ -65,10 +65,26 @@ export class Aircraft3DViewer extends React.Component<
     return true;
   }
 
-  private plotAc = (acModel: THREE.Object3D, ac: Aircraft) => {
-    this.setLocation(acModel, ac);
-    acModel.name = ac.info.Icao;
-    this.scene.add(acModel);
+  private plotAc = (ac: Aircraft) => {
+    // 読み込んだモデルデータをコピーする
+    // デフォルトでB737を表示する
+    ac.object3D = this.modelsDataPool["B737"].clone();
+    this.addAircrafts[ac.info.Icao] = ac;
+    if (ac.info.Type == "B738")
+      ac.object3D = this.modelsDataPool["B737"].clone();
+    if (ac.info.Type == "B77W")
+      ac.object3D = this.modelsDataPool["B77W"].clone();
+    if (ac.info.Type == "B772")
+      ac.object3D = this.modelsDataPool["B77W"].clone();
+
+    // databaseに登録する
+    this.acModelDatabase[ac.info.Icao] = ac.object3D;
+
+    this.setLocation(this.acModelDatabase[ac.info.Icao], ac);
+    console.log(`plotted! ${ac.info.Reg}`);
+
+    this.acModelDatabase[ac.info.Icao].name = ac.info.Icao;
+    this.scene.add(this.acModelDatabase[ac.info.Icao]);
   };
 
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
@@ -80,7 +96,7 @@ export class Aircraft3DViewer extends React.Component<
       // 暫定対策
       // もしかしたらここは必要なくなるかもしない
       this.acModelDatabase[ac.info.Icao] = ac.object3D;
-      this.plotAc(this.acModelDatabase[ac.info.Icao], ac);
+      this.plotAc(ac);
       // とりあえずこの問題はラベルを実装してからにする
       console.log(`re ploted ${ac.info.Reg}`);
       return;
@@ -121,7 +137,6 @@ export class Aircraft3DViewer extends React.Component<
   updateAircraft = () => {
     this.props.updateAcList.forEach((newAc) => {
       if (this.hasLocation(newAc) == false) return;
-      if (this.acModelDatabase[newAc.info.Icao] == null) return;
 
       delete this.addAircrafts[newAc.info.Icao];
       this.setLocation(this.acModelDatabase[newAc.info.Icao], newAc);
@@ -133,20 +148,9 @@ export class Aircraft3DViewer extends React.Component<
       if (this.hasLocation(ac) == false) return;
       if (this.scene.getObjectByName(ac.info.Icao) != null) return;
 
-      // 読み込んだモデルデータをコピーする
-      // デフォルトでB737を表示する
-      ac.object3D = this.modelsDataPool["B737"].clone();
-      this.addAircrafts[ac.info.Icao] = ac;
-      if (ac.info.Type == "B738")
-        ac.object3D = this.modelsDataPool["B737"].clone();
-      if (ac.info.Type == "B77W")
-        ac.object3D = this.modelsDataPool["B77W"].clone();
-      if (ac.info.Type == "B772")
-        ac.object3D = this.modelsDataPool["B77W"].clone();
-
-      // databaseに登録する
-      this.acModelDatabase[ac.info.Icao] = ac.object3D;
-      this.plotAc(this.acModelDatabase[ac.info.Icao], ac);
+      // // databaseに登録する
+      // this.acModelDatabase[ac.info.Icao] = ac.object3D;
+      this.plotAc(ac);
     });
   };
 
