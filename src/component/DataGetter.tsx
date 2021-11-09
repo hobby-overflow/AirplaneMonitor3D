@@ -2,15 +2,19 @@ import React from "react";
 import { AircraftDatabase } from "./AircraftDatabase";
 import { AircraftList } from "../class/AircraftList";
 
+import Config from "../config/config.json"
+
 export class DataGetter extends React.Component<{},{acList:any}> {
     private intervalID: any;
 
+    private signalSimulateMode!: boolean;
     constructor(props: any) {
         super(props);
         this.state = { acList: null }
     }
     componentDidMount () {
         console.log("Mounted!!");
+        this.signalSimulateMode = Config.mode.simulation;
         // この書き方の参考URL: https://ja.reactjs.org/docs/state-and-lifecycle.html
         this.intervalID = setInterval(() => this.tick(), 1000)
     }
@@ -20,9 +24,14 @@ export class DataGetter extends React.Component<{},{acList:any}> {
     }
     
     tick() {
-        const virtualRadar = "http://localhost:8080/VirtualRadar/AircraftList.json";
-        // const signalSimulator = "http://localhost:8080/json";
-        fetch(virtualRadar, {
+        let addr;
+        if (this.signalSimulateMode == true) {
+            addr = Config.access_url.simulate;
+        } else {
+            addr = Config.access_url.realtime;
+        }
+
+        fetch(addr, {
             method: "GET"})
         .then(response => response.json())
         .then(json =>  this.setState({ acList: json.acList }))

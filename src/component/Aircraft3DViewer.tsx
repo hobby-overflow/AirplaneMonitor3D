@@ -9,6 +9,8 @@ import { Converter } from "../class/Converter";
 import { ColladaLoader } from "../lib/ColladaLoader.js";
 import { PixiViewer } from "./PixiViewer";
 
+import Config from "../config/config.json"
+
 export class Aircraft3DViewer extends React.Component<
   {
     addAcList: Array<Aircraft>;
@@ -291,16 +293,16 @@ export class Aircraft3DViewer extends React.Component<
 
     // 地図の描画
     let map = new MapImage({
-      centerLat: 42.820972,
-      centerLon: 141.650889,
+      // centerLat: 42.820972,
+      centerLat: Config.map.centerLat,
+      centerLon: Config.map.centerLon,
       row: 4,
       col: 5,
       centerCol: 2,
       centerRow: 1,
       zoomLevel: 7,
       imagePixel: 1024,
-      api_id: // Please replace your mapbox API.
-        "pk.eyJ1IjoiaG9iYnktb3ZlcmZsb3ciLCJhIjoiY2tkbXFkaDRmMDRhdTJ6bWg4b3ZyOWdheCJ9.TwGPXFHiNs5Hhrjtnxby4Q",
+      api_id: Config.map.api_id
     });
 
     //地図画像の読み込み
