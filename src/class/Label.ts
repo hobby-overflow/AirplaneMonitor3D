@@ -12,6 +12,13 @@ export class Label {
         this.container.position.x = x;
         this.container.position.y = y;
     }
+    public hasLabelText(): boolean {
+        if (this.pixiText.text == null) return false;
+        return true;
+    }
+    public getLabelText(): string {
+        return this.pixiText.text;
+    }
     public setLabelText(text: string) {
         this.pixiText.text = text;
         this.BoxDraw();

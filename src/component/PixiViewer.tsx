@@ -41,15 +41,21 @@ export class PixiViewer extends React.Component<
       });
     }
   }
+  syncLabel = (ac: Aircraft): string =>{
+    let info = ac.info;
+    return info.Call || info.Reg || info.Type;
+  }
 
   addLabel = () => {
     if (this.props.addAircrafts == null) return;
 
     Object.keys(this.props.addAircrafts).forEach((key) => {
-      let ac = this.props.addAircrafts[key];
-      this.acList[key] = new AircraftLabel(
-        new Label(ac.info.Reg, ac.screenX, ac.screenY, 0), ac
-      );
+      let newAc = this.props.addAircrafts[key];
+      let label = this.syncLabel(newAc);
+
+        this.acList[key] = new AircraftLabel(
+          new Label(label, newAc.screenX, newAc.screenY, 0), newAc
+        );
       this.app.stage.addChild(this.acList[key].label.container);
     });
   }
@@ -58,10 +64,15 @@ export class PixiViewer extends React.Component<
     Object.keys(this.props.updateAircrafts).forEach((key) => {
       if (this.acList[key] == null) return;
       
-      let ac = this.props.updateAircrafts[key];
+      let newAc = this.props.updateAircrafts[key];
 
-      if (ac.screenX != 0 || ac.screenY != 0) {
-        this.acList[key].label.setPostion(ac.screenX + 70, ac.screenY);
+      if (newAc.screenX != 0 || newAc.screenY != 0) {
+        this.acList[key].label.setPostion(newAc.screenX + 70, newAc.screenY);
+        
+        // 優先順位の高いデータが受信されたら更新する
+        if (this.acList[key].label.getLabelText() != this.syncLabel(newAc)) {
+          this.acList[key].label.setLabelText(this.syncLabel(newAc));
+        }
       }
     });
   };
