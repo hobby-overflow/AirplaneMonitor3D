@@ -1,6 +1,7 @@
 import path from "path";
 import { BrowserWindow, app, session } from "electron";
 const os = require("os");
+import * as fs from 'fs';
 
 // 開発モードの場合はホットリロードする
 if (process.platform === "win32") {
@@ -29,9 +30,10 @@ async function createWindow() {
         webPreferences: {
             nodeIntegration: false,
             contextIsolation: true,
-            // preload: path.resolve(__dirname, "preload.js"),
+            preload: path.resolve(__dirname, "preload.js"),
         },
     });
+    console.log(__dirname);
 
     // 開発モードの場合はデベロッパーツールを開く
     mainWindow.webContents.openDevTools({ mode: "detach" });
