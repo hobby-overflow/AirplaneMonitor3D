@@ -1,7 +1,9 @@
 import path from "path";
 import { BrowserWindow, app, session } from "electron";
 const os = require("os");
-import * as fs from 'fs';
+import { searchDevtools } from "electron-search-devtools";
+
+const isDev = true;
 
 // 開発モードの場合はホットリロードする
 if (process.platform === "win32") {
@@ -33,29 +35,32 @@ async function createWindow() {
             preload: path.resolve(__dirname, "preload.js"),
         },
     });
-    console.log(__dirname);
 
     // 開発モードの場合はデベロッパーツールを開く
-    mainWindow.webContents.openDevTools({ mode: "detach" });
+    if (isDev) {
+        mainWindow.webContents.openDevTools({ mode: "detach" });
+    }
     // レンダラープロセスをロード
     mainWindow.loadFile("dist/index.html");
     
-    if (process.env.WEBPACK_DEV_SERVER_URL) {
-        await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
-        if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
-    }
+    // if (process.env.WEBPACK_DEV_SERVER_URL) {
+    //     await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
+    //     if (!process.env.IS_TEST) mainWindow.webContents.openDevTools();
+    // }
 };
 
-const reactDevToolsPath = path.join(
-    os.homedir(),
-    "AppData/Local/Google/Chrome/User Data/Default/Extensions/fmkadmapgofadopljbjfkapdkoienihi/4.21.0_0"
-)
 app.whenReady().then(async () => {
+    if (isDev) {
+        const devtools = await searchDevtools('REACT');
+        if (devtools) {
+            await session.defaultSession.loadExtension(devtools, {
+                allowFileAccess: true,
+            });
+        }
+    }
+
     // BrowserWindow インスタンスを作成
     createWindow();
-    
-    session.defaultSession.loadExtension(reactDevToolsPath,
-        { allowFileAccess: true });
 });
 
 // すべてのウィンドウが閉じられたらアプリを終了する
