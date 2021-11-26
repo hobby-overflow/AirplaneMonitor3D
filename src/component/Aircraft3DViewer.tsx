@@ -40,6 +40,7 @@ export class Aircraft3DViewer extends React.Component<
 
   // Icaoをキーにして管理する
   private acModelDatabase: { [key: string]: THREE.Object3D } = {};
+  private acDatabase: { [key: string]: Aircraft } = {};
 
   private updateAircrafts: { [key: string]: Aircraft } = {};
   private addAircrafts: { [key: string]: Aircraft } = {};
@@ -73,36 +74,44 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   private plotAc = (ac: Aircraft) => {
-    // 読み込んだモデルデータをコピーする
-    // デフォルトでB737を表示する
-    ac.object3D = this.modelsDataPool["B737"].clone();
-    this.addAircrafts[ac.info.Icao] = ac;
-    if (ac.info.Type == "B738")
+    let icaoId = ac.info.Icao;
+    
+    if (ac.object3D == null) {
+      // 読み込んだモデルデータをコピーする
+      // デフォルトでB737を表示する
       ac.object3D = this.modelsDataPool["B737"].clone();
-    if (ac.info.Type == "B77W")
-      ac.object3D = this.modelsDataPool["B77W"].clone();
-    if (ac.info.Type == "B772")
-      ac.object3D = this.modelsDataPool["B77W"].clone();
+      this.addAircrafts[icaoId] = ac;
+      if (ac.info.Type == "B738")
+        ac.object3D = this.modelsDataPool["B737"].clone();
+      if (ac.info.Type == "B77W")
+        ac.object3D = this.modelsDataPool["B77W"].clone();
+      if (ac.info.Type == "B772")
+        ac.object3D = this.modelsDataPool["B77W"].clone();
+        
+      // databaseに登録する
+      this.acModelDatabase[icaoId] = ac.object3D;
+      this.acDatabase[icaoId] = ac;
+    }
 
-    // databaseに登録する
-    this.acModelDatabase[ac.info.Icao] = ac.object3D;
-
-    this.setLocation(this.acModelDatabase[ac.info.Icao], ac);
+    this.setLocation(this.acModelDatabase[icaoId], ac);
     console.log(`plotted! ${ac.info.Reg}`);
 
-    this.acModelDatabase[ac.info.Icao].name = ac.info.Icao;
-    this.scene.add(this.acModelDatabase[ac.info.Icao]);
+    this.acModelDatabase[icaoId].name = icaoId;
+    this.scene.add(this.acModelDatabase[icaoId]);
   };
 
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
     if (this.hasLocation(ac) == false) return;
+    let icaoId = ac.info.Icao;
     // 入れ違いでacModelDatabasをdelete後にUpdateとして来てしまったらしい
     // [ 要確認 ] AircraftDataBase.tsx
     // 位置情報を持っていない航空機がUpdateから来てしまったのが原因だった
     if (acModel == null) {
       // 暫定対策
       // もしかしたらここは必要なくなるかもしない
-      this.acModelDatabase[ac.info.Icao] = ac.object3D;
+      if (ac.object3D != null) {
+        this.acModelDatabase[icaoId] = ac.object3D;
+      }
       this.plotAc(ac);
       // とりあえずこの問題はラベルを実装してからにする
       console.log(`re ploted ${ac.info.Reg}`);
@@ -119,8 +128,8 @@ export class Aircraft3DViewer extends React.Component<
       return (-ac.info.Trak + modelRotate) * (Math.PI / 180);
     })();
 
-    this.acModelDatabase[ac.info.Icao] = acModel;
-    this.updateAircrafts[ac.info.Icao] = ac;
+    this.acModelDatabase[icaoId] = acModel;
+    this.updateAircrafts[icaoId] = ac;
   };
 
   removeAircraft = () => {
@@ -129,15 +138,16 @@ export class Aircraft3DViewer extends React.Component<
     });
 
     this.props.removeAcList.forEach((ac) => {
+      let icaoId = ac.info.Icao;
       if (this.hasLocation(ac) == false) return;
 
-      this.removeAircrafts[ac.info.Icao] = ac;
+      this.removeAircrafts[icaoId] = ac;
 
-      if (this.scene.getObjectByName(ac.info.Icao) == null) return;
+      if (this.scene.getObjectByName(icaoId) == null) return;
 
-      this.scene.remove(this.acModelDatabase[ac.info.Icao]);
-      delete this.acModelDatabase[ac.info.Icao];
-      delete this.updateAircrafts[ac.info.Icao];
+      this.scene.remove(this.acModelDatabase[icaoId]);
+      delete this.acModelDatabase[icaoId];
+      delete this.updateAircrafts[icaoId];
     });
   };
 
@@ -145,8 +155,10 @@ export class Aircraft3DViewer extends React.Component<
     this.props.updateAcList.forEach((newAc) => {
       if (this.hasLocation(newAc) == false) return;
 
-      delete this.addAircrafts[newAc.info.Icao];
-      this.setLocation(this.acModelDatabase[newAc.info.Icao], newAc);
+      let icaoId = newAc.info.Icao;
+      delete this.addAircrafts[icaoId];
+      this.acDatabase[icaoId].syncAircraft(newAc); // モデルデータのnullで更新しない
+      this.setLocation(this.acModelDatabase[icaoId], this.acDatabase[icaoId]);
     });
   };
 
@@ -372,20 +384,6 @@ export class Aircraft3DViewer extends React.Component<
     mapGroup.position.set(0, 0, mapCorrectZ);
 
     this.converter = new Converter(map.mostSW, map.mostNE, bbox);
-
-    const boxGeometry = new THREE.BoxGeometry(10, 30, 10);
-    const sphereGeometry = new THREE.SphereGeometry(10, 6, 8);
-    const normalMaterial = new THREE.MeshNormalMaterial();
-
-    const addLocationBox = (lon: number, lat: number) => {
-      let loc = new THREE.Mesh(boxGeometry, normalMaterial);
-      loc.position.set(
-        this.converter.Lon2PosX(lon) + bbox.max.x,
-        1,
-        this.converter.Lat2PosZ(lat) + bbox.max.z
-      );
-      this.scene.add(loc);
-    };
 
     // // 函館
     // addLocationBox(140.728917, 41.768667);

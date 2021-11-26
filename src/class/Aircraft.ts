@@ -42,7 +42,7 @@ export class Aircraft {
             ac.Year
         );
     }
-    public object3D: Object3D = new Object3D();
+    public object3D?: Object3D;
     
     public isTimeout () {
         // 毎フレーム最後に受信した時間を確認する
@@ -54,4 +54,13 @@ export class Aircraft {
         return false;
 
     };
+    
+    public syncAircraft(newAc: Aircraft) {
+        let object3d = this.object3D;
+        // object3Dをnullにしたくい
+        if (newAc.object3D == null) {
+            newAc.object3D = object3d;
+        }
+        this.info = newAc.info;
+    }
 }
