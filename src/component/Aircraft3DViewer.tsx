@@ -9,8 +9,6 @@ import { Converter } from "../class/Converter";
 import { ColladaLoader } from "../lib/ColladaLoader.js";
 import { PixiViewer } from "./PixiViewer";
 
-import Config from "../config/config.json"
-
 export class Aircraft3DViewer extends React.Component<
   {
     addAcList: Array<Aircraft>;
@@ -23,9 +21,18 @@ export class Aircraft3DViewer extends React.Component<
     super(props);
   }
 
-  componentDidMount() {
-    this.init();
-    this.loadModelData();
+  private Config!: Config;
+
+  componentDidMount = async () => {
+    window.api.send('read_config', null);
+    window.api.on('read_config', (arg: string) => {
+      if (arg != null) {
+        this.Config = JSON.parse(arg) as Config;
+
+        this.init();
+        this.loadModelData();
+      }
+    });
   }
 
   private altMag = 0.004;
@@ -298,15 +305,15 @@ export class Aircraft3DViewer extends React.Component<
     // 地図の描画
     let map = new MapImage({
       // centerLat: 42.820972,
-      centerLat: Config.map.centerLat,
-      centerLon: Config.map.centerLon,
+      centerLat: this.Config.map.centerLat,
+      centerLon: this.Config.map.centerLon,
       row: 4,
       col: 5,
       centerCol: 2,
       centerRow: 1,
       zoomLevel: 7,
       imagePixel: 1024,
-      api_id: Config.map.api_id
+      api_id: this.Config.map.api_id
     });
 
     //地図画像の読み込み

@@ -1,7 +1,8 @@
 import path from "path";
-import { BrowserWindow, app, session } from "electron";
+import { BrowserWindow, app, session, ipcMain } from "electron";
 const os = require("os");
 import { searchDevtools } from "electron-search-devtools";
+import * as fs from 'fs';
 
 const isDev = true;
 
@@ -34,6 +35,12 @@ async function createWindow() {
             contextIsolation: true,
             preload: path.resolve(__dirname, "preload.js"),
         },
+    });
+
+    ipcMain.on('read_config', () => {
+        let data = fs.readFileSync('./dist/config.json', 'utf-8')
+        mainWindow.webContents.send('read_config', data);
+        return;
     });
 
     // 開発モードの場合はデベロッパーツールを開く

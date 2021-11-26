@@ -5,11 +5,11 @@
     },
     "mode": {
         "map": false,
-        "simulation": false
+        "simulation": true
     },
     "map": {
-        "centerLat": 42.882556,
-        "centerLon": 141.577778,
+        "centerLat": 42.820972,
+        "centerLon": 141.6500889,
         "position": {
             "x": -357.5,
             "z": 457.75

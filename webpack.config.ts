@@ -69,7 +69,8 @@ const config: Configuration = {
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: "./src/assets", to: "./" }
+        { from: "./src/assets", to: "./" },
+        { from: "./src/config/config.json", to: "./" }
       ]
     }
     ),
