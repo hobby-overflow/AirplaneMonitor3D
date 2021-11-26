@@ -8,6 +8,7 @@ import SkyPanoramic from "../assets/SkyPanoramic_mini.png";
 import { Converter } from "../class/Converter";
 import { ColladaLoader } from "../lib/ColladaLoader.js";
 import { PixiViewer } from "./PixiViewer";
+import { LinearMipmapLinearFilter } from "three";
 
 export class Aircraft3DViewer extends React.Component<
   {
@@ -94,6 +95,18 @@ export class Aircraft3DViewer extends React.Component<
     }
 
     this.setLocation(this.acModelDatabase[icaoId], ac);
+
+    let position = this.acModelDatabase[icaoId].position;
+    let yZeroPos = new THREE.Vector3(position.x, -3000, position.z);
+    let lineMaterial = new THREE.LineBasicMaterial({
+      color: 0xffffff,
+      linewidth: 4
+    });
+    let lineGeometry = new THREE.BufferGeometry().setFromPoints([ position, yZeroPos ]);
+    let line = new THREE.Line(lineGeometry, lineMaterial);
+    line.name = "line_" + icaoId;
+    this.acModelDatabase[icaoId].attach(line);
+
     console.log(`plotted! ${ac.info.Reg}`);
 
     this.acModelDatabase[icaoId].name = icaoId;
@@ -128,6 +141,7 @@ export class Aircraft3DViewer extends React.Component<
       return (-ac.info.Trak + modelRotate) * (Math.PI / 180);
     })();
 
+    this.acModelDatabase[icaoId]
     this.acModelDatabase[icaoId] = acModel;
     this.updateAircrafts[icaoId] = ac;
   };
