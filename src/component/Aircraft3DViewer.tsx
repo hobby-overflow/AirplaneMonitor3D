@@ -247,14 +247,14 @@ export class Aircraft3DViewer extends React.Component<
   };
 
   viewerTick = () => {
-    this.calculateScreenPosition(this.updateAircrafts);
-    this.calculateScreenPosition(this.addAircrafts);
-
     setTimeout(() => {
       requestAnimationFrame(() => this.viewerTick());
     }, 1000 / 30);
 
     this.threeRenderer.render(this.scene, this.camera);
+
+    this.calculateScreenPosition(this.updateAircrafts);
+    this.calculateScreenPosition(this.addAircrafts);
   };
   countPlottedAircrafts(): number {
     let cnt = 0;
