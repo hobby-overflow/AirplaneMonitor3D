@@ -66,6 +66,7 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   private hasLocation(ac: Aircraft): boolean {
+    if (ac == null) return false;
     if (ac.info.Long == null) return false;
     if (ac.info.Lat == null) return false;
     if (ac.info.Alt == null) return false;
@@ -171,7 +172,9 @@ export class Aircraft3DViewer extends React.Component<
 
       let icaoId = newAc.info.Icao;
       delete this.addAircrafts[icaoId];
-      this.acDatabase[icaoId].syncAircraft(newAc); // モデルデータのnullで更新しない
+      if (this.acDatabase[icaoId] != null) {
+        this.acDatabase[icaoId].syncAircraft(newAc); // モデルデータのnullで更新しない
+      }
       this.setLocation(this.acModelDatabase[icaoId], this.acDatabase[icaoId]);
     });
   };
