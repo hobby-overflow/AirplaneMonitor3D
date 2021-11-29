@@ -4,17 +4,11 @@
         "simulate": "http://localhost:8080/json"
     },
     "mode": {
-        "map": false,
-        "simulation": true
+        "simulation": false
     },
     "map": {
-        "centerLat": 42.820972,
-        "centerLon": 141.6500889,
-        "position": {
-            "x": -357.5,
-            "z": 457.75
-        },
-        "scale": 0.31089999999999973,
+        "centerLat": 42.882556,
+        "centerLon": 141.577778,
         "api_id": "pk.eyJ1IjoiaG9iYnktb3ZlcmZsb3ciLCJhIjoiY2tkbXFkaDRmMDRhdTJ6bWg4b3ZyOWdheCJ9.TwGPXFHiNs5Hhrjtnxby4Q"
     },
     "view": {
