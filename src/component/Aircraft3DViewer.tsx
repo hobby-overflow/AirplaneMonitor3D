@@ -7,8 +7,6 @@ import { MapControls } from "../lib/OrbitControls";
 import SkyPanoramic from "../assets/SkyPanoramic_mini.png";
 import { Converter } from "../class/Converter";
 import { ColladaLoader } from "../lib/ColladaLoader.js";
-import { PixiViewer } from "./PixiViewer";
-import { LinearMipmapLinearFilter } from "three";
 
 export class Aircraft3DViewer extends React.Component<
   {
@@ -270,11 +268,6 @@ export class Aircraft3DViewer extends React.Component<
     return (
       <>
         <canvas id="three"></canvas>
-        <PixiViewer
-          addAircrafts={this.addAircrafts}
-          updateAircrafts={this.updateAircrafts}
-          removeAircrafts={this.removeAircrafts}
-        />
       </>
     );
   }
