@@ -7,8 +7,8 @@
         "simulation": false
     },
     "map": {
-        "centerLat": 42.882556,
-        "centerLon": 141.577778,
+        "centerLat": 42.775,
+        "centerLon": 141.692222,
         "api_id": "pk.eyJ1IjoiaG9iYnktb3ZlcmZsb3ciLCJhIjoiY2tkbXFkaDRmMDRhdTJ6bWg4b3ZyOWdheCJ9.TwGPXFHiNs5Hhrjtnxby4Q"
     },
     "view": {
