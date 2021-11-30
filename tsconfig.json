@@ -9,6 +9,7 @@
     "strict": true,
     "sourceMap": true,
     "allowJs": true,
+    "outDir": "dist"
   },
   "ts-node": {
     "compilerOptions": {
