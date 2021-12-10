@@ -148,6 +148,7 @@ export class Aircraft3DViewer extends React.Component<
   removeAircraft = () => {
     Object.keys(this.removeAircrafts).forEach((key) => {
       delete this.removeAircrafts[key];
+      delete this.acDatabase[key];
     });
 
     this.props.removeAcList.forEach((ac) => {
@@ -160,7 +161,12 @@ export class Aircraft3DViewer extends React.Component<
 
       this.scene.remove(this.acModelDatabase[icaoId]);
       delete this.acModelDatabase[icaoId];
+      delete this.acDatabase[icaoId];
       delete this.updateAircrafts[icaoId];
+      let elem = document.getElementById(icaoId);
+      if (elem != null) {
+        elem.remove();
+      }
     });
   };
 
@@ -184,7 +190,16 @@ export class Aircraft3DViewer extends React.Component<
 
       // // databaseに登録する
       // this.acModelDatabase[ac.info.Icao] = ac.object3D;
+      this.acDatabase[ac.info.Icao] = ac;
       this.plotAc(ac);
+      let elem = document.getElementById("labelContainer");
+      if (elem != null) {
+        let p = document.createElement('p');
+        p.id = ac.info.Icao;
+        p.className = 'label';
+        p.innerText = ac.info.label;
+        elem.appendChild(p);
+      }
     });
   };
 
@@ -219,9 +234,6 @@ export class Aircraft3DViewer extends React.Component<
       const ac = aircrafts[key];
       const acModel = this.acModelDatabase[key];
       
-      ac._screenX = ac.screenX;
-      ac._screenY = ac.screenY;
-
       let screenV = new THREE.Vector3();
       if (this.hasLocation(ac) == false) return;
       if (acModel == null) return;
@@ -234,7 +246,7 @@ export class Aircraft3DViewer extends React.Component<
       screenPosX = (screenV.x + 1) * innerWidth / 2;
       screenPosY = - (screenV.y - 1) * innerHeight / 2;
       screenPosZ = screenV.z;
-
+      
       if (screenPosX == 0 && screenPosY == 0) return;
 
       // ガタガタはちょっとだけ抑えられた
@@ -244,9 +256,18 @@ export class Aircraft3DViewer extends React.Component<
       
       ac.screenX = screenPosX;
       ac.screenY = screenPosY;
+      
+      let labelElem = document.getElementById(ac.info.Icao);
+      console.log(labelElem);
+      if (labelElem != null) {
+        labelElem.style.left = screenPosX.toString() + 'px';
+        labelElem.style.top = screenPosY.toString() + 'px';
+        console.log(screenPosX.toString());
+      }
     });
   };
 
+  
   viewerTick = () => {
     setTimeout(() => {
       requestAnimationFrame(() => this.viewerTick());
@@ -271,6 +292,7 @@ export class Aircraft3DViewer extends React.Component<
     return (
       <>
         <canvas id="three"></canvas>
+        <div id="labelContainer"></div>
       </>
     );
   }
@@ -391,7 +413,7 @@ export class Aircraft3DViewer extends React.Component<
     // map correction
     let mapCorrectX = 0;
     let mapCorrectZ = 40;
-    mapGroup.position.set(0, 0, mapCorrectZ);
+    mapGroup.position.set(mapCorrectX, 0, mapCorrectZ);
 
     this.converter = new Converter(map.mostSW, map.mostNE, bbox);
 

@@ -15,6 +15,7 @@ export class Info {
         public Sqk: string,
         public Year: string
     ) {}
+    public label = this.Call || this.Reg || this.Type || this.Reg;
 }
 
 export class Aircraft {
@@ -22,8 +23,6 @@ export class Aircraft {
     private receivetAt: Date = new Date();
     public screenX: number = 0;
     public screenY: number = 0;
-    public _screenX: number = 0;
-    public _screenY: number = 0;
     constructor(aircraft:any) {
         let ac = aircraft;
         this.info = new Info(
@@ -50,7 +49,7 @@ export class Aircraft {
         let lastReceivedAt = new Date().getTime() - this.receivetAt.getTime();
         let diffSec = lastReceivedAt / 1000;
 
-        if (diffSec >= 30) return true;
+        if (diffSec >= 15) return true;
         return false;
 
     };

@@ -4,7 +4,7 @@
         "simulate": "http://localhost:8080/json"
     },
     "mode": {
-        "simulation": false
+        "simulation": true
     },
     "map": {
         "centerLat": 42.775,
