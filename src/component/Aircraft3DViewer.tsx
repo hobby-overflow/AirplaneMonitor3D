@@ -140,7 +140,6 @@ export class Aircraft3DViewer extends React.Component<
       return (-ac.info.Trak + modelRotate) * (Math.PI / 180);
     })();
 
-    this.acModelDatabase[icaoId]
     this.acModelDatabase[icaoId] = acModel;
     this.updateAircrafts[icaoId] = ac;
   };
@@ -172,12 +171,21 @@ export class Aircraft3DViewer extends React.Component<
 
   updateAircraft = () => {
     this.props.updateAcList.forEach((newAc) => {
-      if (this.hasLocation(newAc) == false) return;
+      // 座標データを持っていないなら処理をしない
+      if (this.hasLocation(newAc) == false) {
+        console.log(newAc.info.Reg + " " + newAc.info.Type);
+        return;
+      }
 
       let icaoId = newAc.info.Icao;
       delete this.addAircrafts[icaoId];
       if (this.acDatabase[icaoId] != null) {
         this.acDatabase[icaoId].syncAircraft(newAc); // モデルデータのnullで更新しない
+      }
+      // sceneに存在しないなら
+      if (this.scene.getObjectByName(newAc.info.Icao) == null) {
+        this.plotAc(newAc);
+        this.setLabel(newAc);
       }
       this.setLocation(this.acModelDatabase[icaoId], this.acDatabase[icaoId]);
     });
@@ -192,6 +200,11 @@ export class Aircraft3DViewer extends React.Component<
       // this.acModelDatabase[ac.info.Icao] = ac.object3D;
       this.acDatabase[ac.info.Icao] = ac;
       this.plotAc(ac);
+      this.setLabel(ac);
+    });
+  };
+  
+  setLabel = (ac: Aircraft) => {
       let elem = document.getElementById("labelContainer");
       if (elem != null) {
         let p = document.createElement('p');
@@ -200,8 +213,7 @@ export class Aircraft3DViewer extends React.Component<
         p.innerText = ac.info.label;
         elem.appendChild(p);
       }
-    });
-  };
+  }
 
   // ここに来るデータは位置情報を持っている航空機のみで良いはず
   // 2021/10/14時点
@@ -214,10 +226,10 @@ export class Aircraft3DViewer extends React.Component<
     this.addAircraft();
     this.updateAircraft();
     
-    console.log(`remove ${Object.keys(this.removeAircrafts).length}`)
-    console.log(`add ${Object.keys(this.addAircrafts).length}`)
-    console.log(`update ${Object.keys(this.updateAircrafts).length}`);
-    console.log('====================================================');
+    // console.log(`remove ${Object.keys(this.removeAircrafts).length}`)
+    // console.log(`add ${Object.keys(this.addAircrafts).length}`)
+    // console.log(`update ${Object.keys(this.updateAircrafts).length}`);
+    // console.log('====================================================');
   }
 
   private scene = new THREE.Scene();
@@ -258,11 +270,9 @@ export class Aircraft3DViewer extends React.Component<
       ac.screenY = screenPosY;
       
       let labelElem = document.getElementById(ac.info.Icao);
-      console.log(labelElem);
       if (labelElem != null) {
         labelElem.style.left = screenPosX.toString() + 'px';
         labelElem.style.top = screenPosY.toString() + 'px';
-        console.log(screenPosX.toString());
       }
     });
   };
