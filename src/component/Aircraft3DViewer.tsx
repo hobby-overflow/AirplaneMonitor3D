@@ -22,18 +22,6 @@ export class Aircraft3DViewer extends React.Component<
 
   private Config!: Config;
 
-  componentDidMount = async () => {
-    window.api.send('read_config', null);
-    window.api.on('read_config', (arg: string) => {
-      if (arg != null) {
-        this.Config = JSON.parse(arg) as Config;
-
-        this.init();
-        this.loadModelData();
-      }
-    });
-  }
-
   private altMag = 0.004;
   private modelScale = 0.4;
 
@@ -73,7 +61,7 @@ export class Aircraft3DViewer extends React.Component<
     return true;
   }
 
-  // 3D空間内にプロットする
+  // 3D空間内にモデルを追加しプロットする
   private plotAc = (ac: Aircraft) => {
     let icaoId = ac.info.Icao;
     
@@ -118,9 +106,7 @@ export class Aircraft3DViewer extends React.Component<
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
     if (this.hasLocation(ac) == false) return;
     let icaoId = ac.info.Icao;
-    // 入れ違いでacModelDatabasをdelete後にUpdateとして来てしまったらしい
-    // [ 要確認 ] AircraftDataBase.tsx
-    // 位置情報を持っていない航空機がUpdateから来てしまったのが原因だった
+    // 位置情報を持っていないなら
     if (acModel == null) {
       // 暫定対策
       // もしかしたらここは必要なくなるかもしない
@@ -129,6 +115,7 @@ export class Aircraft3DViewer extends React.Component<
       }
       this.plotAc(ac);
       // とりあえずこの問題はラベルを実装してからにする
+      // rePlotは起きていない？
       console.log(`re ploted ${ac.info.Reg}`);
       return;
     }
@@ -178,6 +165,7 @@ export class Aircraft3DViewer extends React.Component<
       if (this.hasLocation(newAc) == false) return;
 
       // プロットされていないならプロットする
+      // (addAircraftの時点で座標が来なかった場合に実行される)
       if (this.scene.getObjectByName(icaoId) == null) {
         this.plotAc(newAc);
         this.setLabel(newAc);
@@ -225,23 +213,8 @@ export class Aircraft3DViewer extends React.Component<
     }
   };
 
-  // ここに来るデータは位置情報を持っている航空機のみで良いはず
-  // 2021/10/14時点
-  componentDidUpdate() {
-    // DB -> viewer
-    // 先にremoveAcListを処理する(delete ac 的な感じ)
-    // AddAcとUpdateAcの 順序は影響しないはず?
-    // ここでAddAcUpdateAcが来たらOjectPool
-    this.removeAircraft();
-    this.addAircraft();
-    this.updateAircraft();
-    
-    // console.log(`remove ${Object.keys(this.removeAircrafts).length}`)
-    // console.log(`add ${Object.keys(this.addAircrafts).length}`)
-    // console.log(`update ${Object.keys(this.updateAircrafts).length}`);
-    // console.log('====================================================');
-  }
 
+  // ここからワールド空間の設定やレンダリング処理
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
   private threeRenderer = new THREE.WebGLRenderer();
@@ -270,11 +243,6 @@ export class Aircraft3DViewer extends React.Component<
       screenPosZ = screenV.z;
       
       if (screenPosX == 0 && screenPosY == 0) return;
-
-      // ガタガタはちょっとだけ抑えられた
-      // けどラベルがヌルっと遅れてついていくのがう～ん...
-      // ac.screenX = (screenPosX + ac._screenX) / 2;
-      // ac.screenY = (screenPosY + ac._screenY) / 2;
       
       ac.screenX = screenPosX;
       ac.screenY = screenPosY;
@@ -306,6 +274,35 @@ export class Aircraft3DViewer extends React.Component<
       cnt += 1;
     }
     return cnt;
+  }
+
+  componentDidMount = async () => {
+    window.api.send('read_config', null);
+    window.api.on('read_config', (arg: string) => {
+      if (arg != null) {
+        this.Config = JSON.parse(arg) as Config;
+
+        this.init();
+        this.loadModelData();
+      }
+    });
+  }
+
+  // ここに来るデータは位置情報を持っている航空機のみで良いはず
+  // 2021/10/14時点
+  componentDidUpdate() {
+    // DB -> viewer
+    // 先にremoveAcListを処理する(delete ac 的な感じ)
+    // AddAcとUpdateAcの 順序は影響しないはず?
+    // ここでAddAcUpdateAcが来たらOjectPool
+    this.removeAircraft();
+    this.addAircraft();
+    this.updateAircraft();
+    
+    // console.log(`remove ${Object.keys(this.removeAircrafts).length}`)
+    // console.log(`add ${Object.keys(this.addAircrafts).length}`)
+    // console.log(`update ${Object.keys(this.updateAircrafts).length}`);
+    // console.log('====================================================');
   }
 
   render() {
