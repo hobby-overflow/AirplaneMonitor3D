@@ -1,6 +1,6 @@
 import { Box3 } from "three";
 
-export class Converter {
+export class CoordinateConverter {
     constructor(private mostSW: MostSW, private mostNE: MostNE, public boundary: Box3) {}
     
     Lon2PosX(lon: number): number {

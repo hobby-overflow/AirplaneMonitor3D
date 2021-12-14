@@ -5,7 +5,7 @@ import { MapImage } from "../class/MapGetter";
 import { MapControls } from "../lib/OrbitControls";
 
 import SkyPanoramic from "../assets/SkyPanoramic_mini.png";
-import { Converter } from "../class/Converter";
+import { CoordinateConverter } from "../class/Converter";
 import { ColladaLoader } from "../lib/ColladaLoader.js";
 
 export class Aircraft3DViewer extends React.Component<
@@ -73,6 +73,7 @@ export class Aircraft3DViewer extends React.Component<
     return true;
   }
 
+  // 3D空間内にプロットする
   private plotAc = (ac: Aircraft) => {
     let icaoId = ac.info.Icao;
     
@@ -112,6 +113,8 @@ export class Aircraft3DViewer extends React.Component<
     this.scene.add(this.acModelDatabase[icaoId]);
   };
 
+
+  // 座標を更新する
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
     if (this.hasLocation(ac) == false) return;
     let icaoId = ac.info.Icao;
@@ -162,31 +165,32 @@ export class Aircraft3DViewer extends React.Component<
       delete this.acModelDatabase[icaoId];
       delete this.acDatabase[icaoId];
       delete this.updateAircrafts[icaoId];
-      let elem = document.getElementById(icaoId);
-      if (elem != null) {
-        elem.remove();
-      }
+      this.removeLabel(icaoId);
     });
   };
 
+
   updateAircraft = () => {
     this.props.updateAcList.forEach((newAc) => {
+      let icaoId = newAc.info.Icao;
+
       // 座標データを持っていないなら処理をしない
-      if (this.hasLocation(newAc) == false) {
-        console.log(newAc.info.Reg + " " + newAc.info.Type);
+      if (this.hasLocation(newAc) == false) return;
+
+      // プロットされていないならプロットする
+      if (this.scene.getObjectByName(icaoId) == null) {
+        this.plotAc(newAc);
+        this.setLabel(newAc);
         return;
       }
 
-      let icaoId = newAc.info.Icao;
+      // データの更新
       delete this.addAircrafts[icaoId];
       if (this.acDatabase[icaoId] != null) {
         this.acDatabase[icaoId].syncAircraft(newAc); // モデルデータのnullで更新しない
       }
-      // sceneに存在しないなら
-      if (this.scene.getObjectByName(newAc.info.Icao) == null) {
-        this.plotAc(newAc);
-        this.setLabel(newAc);
-      }
+
+      // 座標の更新
       this.setLocation(this.acModelDatabase[icaoId], this.acDatabase[icaoId]);
     });
   };
@@ -205,15 +209,21 @@ export class Aircraft3DViewer extends React.Component<
   };
   
   setLabel = (ac: Aircraft) => {
-      let elem = document.getElementById("labelContainer");
-      if (elem != null) {
-        let p = document.createElement('p');
-        p.id = ac.info.Icao;
-        p.className = 'label';
-        p.innerText = ac.info.label;
-        elem.appendChild(p);
-      }
+    let elem = document.getElementById("labelContainer");
+    if (elem != null) {
+      let p = document.createElement('p');
+      p.id = ac.info.Icao;
+      p.className = 'label';
+      p.innerText = ac.info.label;
+      elem.appendChild(p);
+    }
   }
+  removeLabel = (icaoId: string) => {
+    let elem = document.getElementById(icaoId);
+    if (elem != null) {
+      elem.remove();
+    }
+  };
 
   // ここに来るデータは位置情報を持っている航空機のみで良いはず
   // 2021/10/14時点
@@ -236,7 +246,7 @@ export class Aircraft3DViewer extends React.Component<
   private camera = new THREE.PerspectiveCamera();
   private threeRenderer = new THREE.WebGLRenderer();
 
-  private converter!: Converter;
+  private converter!: CoordinateConverter;
 
   private calculateScreenPosition = (aircrafts: {
     [key: string]: Aircraft;
@@ -425,7 +435,7 @@ export class Aircraft3DViewer extends React.Component<
     let mapCorrectZ = 40;
     mapGroup.position.set(mapCorrectX, 0, mapCorrectZ);
 
-    this.converter = new Converter(map.mostSW, map.mostNE, bbox);
+    this.converter = new CoordinateConverter(map.mostSW, map.mostNE, bbox);
 
     // // 函館
     // addLocationBox(140.728917, 41.768667);
