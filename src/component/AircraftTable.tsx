@@ -25,6 +25,17 @@ export class AircraftTable extends React.Component<{ addAcList:Array<Aircraft>, 
     render() {
         var acTable = new Array<ReactElement>();
 
+        const hasLocation = (ac: Aircraft) => {
+            if (ac == null) return "❌";
+            if (ac.info.Long == null) return "❌";
+            if (ac.info.Lat == null) return "❌";
+            if (ac.info.Alt == null) return "❌";
+            if (ac.info.Trak == null) return "❌";
+
+            // return true;
+            return "✅"
+        }
+
         Object.values(this.acDataBase).forEach((item) => {
             acTable.push(
             <tr key={item.info.Icao}>
@@ -35,6 +46,7 @@ export class AircraftTable extends React.Component<{ addAcList:Array<Aircraft>, 
                 <td>{item.info.Sqk}</td>
                 <td>{item.info.Type}</td>
                 <td>{item.info.Year}</td>
+                <td>{hasLocation(item)}</td>
             </tr>);
         });
         return (
@@ -49,6 +61,7 @@ export class AircraftTable extends React.Component<{ addAcList:Array<Aircraft>, 
                         <th>Sqk</th>
                         <th>Type</th>
                         <th>Year</th>
+                        <th>hasPos</th>
                     </tr>
                 </thead>
                 <tbody>
