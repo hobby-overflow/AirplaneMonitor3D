@@ -95,7 +95,7 @@ export class Aircraft3DViewer extends React.Component<
     line.name = "line_" + icaoId;
     this.acModelDatabase[icaoId].attach(line);
 
-    console.log(`plotted! ${ac.info.Reg}`);
+    console.log(`plotted! ${ac.info.Reg} ${new Date().toLocaleTimeString()}`);
 
     this.acModelDatabase[icaoId].name = icaoId;
     this.scene.add(this.acModelDatabase[icaoId]);
