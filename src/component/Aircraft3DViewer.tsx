@@ -251,6 +251,7 @@ export class Aircraft3DViewer extends React.Component<
       
       let labelElem = document.getElementById(ac.info.Icao);
       if (labelElem != null) {
+				labelElem.innerText = ac.info.label;
         labelElem.style.left = screenPosX.toString() + 'px';
         labelElem.style.top = screenPosY.toString() + 'px';
       }
