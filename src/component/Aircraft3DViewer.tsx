@@ -1,12 +1,14 @@
 import React from "react";
 import * as THREE from "three";
+
 import { Aircraft } from "../class/Aircraft";
 import { MapImage } from "../class/MapGetter";
+import { CoordinateConverter } from "../class/Converter";
+
 import { MapControls } from "../lib/OrbitControls";
+import { ColladaLoader } from "../lib/ColladaLoader.js";
 
 import SkyPanoramic from "../assets/SkyPanoramic_mini.png";
-import { CoordinateConverter } from "../class/Converter";
-import { ColladaLoader } from "../lib/ColladaLoader.js";
 
 export class Aircraft3DViewer extends React.Component<
   {
