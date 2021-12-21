@@ -1,9 +1,9 @@
 interface MostNE {
-    maxLon: number,
-    maxLat: number
+  maxLon: number;
+  maxLat: number;
 }
 
 interface MostSW {
-    minLon: number,
-    minLat: number
+  minLon: number;
+  minLat: number;
 }

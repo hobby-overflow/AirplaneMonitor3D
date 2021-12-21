@@ -1,18 +1,18 @@
 {
-    "access_url": {
-        "realtime": "http://localhost:8080/VirtualRadar/AircraftList.json",
-        "simulate": "http://localhost:8080/json"
-    },
-    "mode": {
-        "simulation": true
-    },
-    "map": {
-        "centerLat": 42.775,
-        "centerLon": 141.692222,
-        "api_id": "pk.eyJ1IjoiaG9iYnktb3ZlcmZsb3ciLCJhIjoiY2tkbXFkaDRmMDRhdTJ6bWg4b3ZyOWdheCJ9.TwGPXFHiNs5Hhrjtnxby4Q"
-    },
-    "view": {
-        "pixelDensity": 100,
-        "lineWidth": 8
-    }
+  "access_url": {
+    "realtime": "http://localhost:8080/VirtualRadar/AircraftList.json",
+    "simulate": "http://localhost:8080/json"
+  },
+  "mode": {
+    "simulation": true
+  },
+  "map": {
+    "centerLat": 42.775,
+    "centerLon": 141.692222,
+    "api_id": "pk.eyJ1IjoiaG9iYnktb3ZlcmZsb3ciLCJhIjoiY2tkbXFkaDRmMDRhdTJ6bWg4b3ZyOWdheCJ9.TwGPXFHiNs5Hhrjtnxby4Q"
+  },
+  "view": {
+    "pixelDensity": 100,
+    "lineWidth": 8
+  }
 }

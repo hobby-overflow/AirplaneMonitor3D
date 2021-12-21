@@ -54,31 +54,34 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   private hasLocation(ac: Aircraft): boolean {
-    if (ac == null) return false;
-    if (ac.info.Long == null) return false;
-    if (ac.info.Lat == null) return false;
-    if (ac.info.Alt == null) return false;
-    if (ac.info.Trak == null) return false;
+    if (ac === null) return false;
+    if (ac.info.Long === null) return false;
+    if (ac.info.Lat === null) return false;
+    if (ac.info.Alt === null) return false;
+    if (ac.info.Trak === null) return false;
 
     return true;
   }
 
   // 3D空間内にモデルを追加しプロットする
   private plotAc = (ac: Aircraft) => {
-    let icaoId = ac.info.Icao;
-    
-    if (ac.object3D == null) {
+    const icaoId = ac.info.Icao;
+
+    if (ac.object3D === null) {
       // 読み込んだモデルデータをコピーする
       // デフォルトでB737を表示する
-      ac.object3D = this.modelsDataPool["B737"].clone();
+      ac.object3D = this.modelsDataPool.B737.clone();
       this.addAircrafts[icaoId] = ac;
-      if (ac.info.Type == "B738")
-        ac.object3D = this.modelsDataPool["B737"].clone();
-      if (ac.info.Type == "B77W")
-        ac.object3D = this.modelsDataPool["B77W"].clone();
-      if (ac.info.Type == "B772")
-        ac.object3D = this.modelsDataPool["B77W"].clone();
-        
+      if (ac.info.Type === "B738") {
+        ac.object3D = this.modelsDataPool.B737.clone();
+      }
+      if (ac.info.Type === "B77W") {
+        ac.object3D = this.modelsDataPool.B77W.clone();
+      }
+      if (ac.info.Type === "B772") {
+        ac.object3D = this.modelsDataPool.B77W.clone();
+      }
+
       // databaseに登録する
       this.acModelDatabase[icaoId] = ac.object3D;
       this.acDatabase[icaoId] = ac;
@@ -86,14 +89,17 @@ export class Aircraft3DViewer extends React.Component<
 
     this.setLocation(this.acModelDatabase[icaoId], ac);
 
-    let position = this.acModelDatabase[icaoId].position;
-    let yZeroPos = new THREE.Vector3(position.x, -3000, position.z);
-    let lineMaterial = new THREE.LineBasicMaterial({
+    const position = this.acModelDatabase[icaoId].position;
+    const yZeroPos = new THREE.Vector3(position.x, -3000, position.z);
+    const lineMaterial = new THREE.LineBasicMaterial({
       color: 0xffffff,
-      linewidth: 4
+      linewidth: 4,
     });
-    let lineGeometry = new THREE.BufferGeometry().setFromPoints([ position, yZeroPos ]);
-    let line = new THREE.Line(lineGeometry, lineMaterial);
+    const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+      position,
+      yZeroPos,
+    ]);
+    const line = new THREE.Line(lineGeometry, lineMaterial);
     line.name = "line_" + icaoId;
     this.acModelDatabase[icaoId].attach(line);
 
@@ -103,11 +109,10 @@ export class Aircraft3DViewer extends React.Component<
     this.scene.add(this.acModelDatabase[icaoId]);
   };
 
-
   // 座標を更新する
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
-    if (this.hasLocation(ac) == false) return;
-    let icaoId = ac.info.Icao;
+    if (this.hasLocation(ac) === false) return;
+    const icaoId = ac.info.Icao;
     // 位置情報を持っていないなら
     if (acModel == null) {
       // 暫定対策
@@ -143,12 +148,12 @@ export class Aircraft3DViewer extends React.Component<
     });
 
     this.props.removeAcList.forEach((ac) => {
-      let icaoId = ac.info.Icao;
-      if (this.hasLocation(ac) == false) return;
+      const icaoId = ac.info.Icao;
+      if (this.hasLocation(ac) === false) return;
 
       this.removeAircrafts[icaoId] = ac;
 
-      if (this.scene.getObjectByName(icaoId) == null) return;
+      if (this.scene.getObjectByName(icaoId) === null) return;
 
       this.scene.remove(this.acModelDatabase[icaoId]);
       delete this.acModelDatabase[icaoId];
@@ -158,17 +163,16 @@ export class Aircraft3DViewer extends React.Component<
     });
   };
 
-
   updateAircraft = () => {
     this.props.updateAcList.forEach((newAc) => {
-      let icaoId = newAc.info.Icao;
+      const icaoId = newAc.info.Icao;
 
       // 座標データを持っていないなら処理をしない
-      if (this.hasLocation(newAc) == false) return;
+      if (this.hasLocation(newAc) === false) return;
 
       // プロットされていないならプロットする
       // (addAircraftの時点で座標が来なかった場合に実行される)
-      if (this.scene.getObjectByName(icaoId) == null) {
+      if (this.scene.getObjectByName(icaoId) === null) {
         this.plotAc(newAc);
         this.setLabel(newAc);
         return;
@@ -187,7 +191,7 @@ export class Aircraft3DViewer extends React.Component<
 
   addAircraft = () => {
     this.props.addAcList.forEach((ac) => {
-      if (this.hasLocation(ac) == false) return;
+      if (this.hasLocation(ac) === false) return;
       if (this.scene.getObjectByName(ac.info.Icao) != null) return;
 
       // // databaseに登録する
@@ -197,24 +201,24 @@ export class Aircraft3DViewer extends React.Component<
       this.setLabel(ac);
     });
   };
-  
+
   setLabel = (ac: Aircraft) => {
-    let elem = document.getElementById("labelContainer");
+    const elem = document.getElementById("labelContainer");
     if (elem != null) {
-      let p = document.createElement('p');
+      const p = document.createElement("p");
       p.id = ac.info.Icao;
-      p.className = 'label';
+      p.className = "label";
       p.innerText = ac.info.label;
       elem.appendChild(p);
     }
-  }
+  };
+
   removeLabel = (icaoId: string) => {
-    let elem = document.getElementById(icaoId);
+    const elem = document.getElementById(icaoId);
     if (elem != null) {
       elem.remove();
     }
   };
-
 
   // ここからワールド空間の設定やレンダリング処理
   private scene = new THREE.Scene();
@@ -227,38 +231,36 @@ export class Aircraft3DViewer extends React.Component<
     [key: string]: Aircraft;
   }) => {
     Object.keys(aircrafts).forEach((key) => {
-
       const ac = aircrafts[key];
       const acModel = this.acModelDatabase[key];
-      
-      let screenV = new THREE.Vector3();
-      if (this.hasLocation(ac) == false) return;
-      if (acModel == null) return;
-      
+
+      const screenV = new THREE.Vector3();
+      if (this.hasLocation(ac) === false) return;
+      if (acModel === null) return;
+
       screenV.copy(acModel.position);
       screenV.project(this.camera);
       if (screenV.z > 1.0) return;
-      let screenPosX, screenPosY, screenPosZ;
-      
-      screenPosX = (screenV.x + 1) * innerWidth / 2;
-      screenPosY = - (screenV.y - 1) * innerHeight / 2;
-      screenPosZ = screenV.z;
-      
-      if (screenPosX == 0 && screenPosY == 0) return;
-      
+      // let screenPosX, screenPosY, screenPosZ
+
+      const screenPosX = ((screenV.x + 1) * innerWidth) / 2;
+      const screenPosY = (-(screenV.y - 1) * innerHeight) / 2;
+      // const screenPosZ = screenV.z
+
+      if (screenPosX === 0 && screenPosY === 0) return;
+
       ac.screenX = screenPosX;
       ac.screenY = screenPosY;
-      
-      let labelElem = document.getElementById(ac.info.Icao);
+
+      const labelElem = document.getElementById(ac.info.Icao);
       if (labelElem != null) {
-				labelElem.innerText = ac.info.label;
-        labelElem.style.left = screenPosX.toString() + 'px';
-        labelElem.style.top = screenPosY.toString() + 'px';
+        labelElem.innerText = ac.info.label;
+        labelElem.style.left = screenPosX.toString() + "px";
+        labelElem.style.top = screenPosY.toString() + "px";
       }
     });
   };
 
-  
   viewerTick = () => {
     setTimeout(() => {
       requestAnimationFrame(() => this.viewerTick());
@@ -269,19 +271,20 @@ export class Aircraft3DViewer extends React.Component<
     this.calculateScreenPosition(this.updateAircrafts);
     this.calculateScreenPosition(this.addAircrafts);
   };
+
   countPlottedAircrafts(): number {
     let cnt = 0;
-    for (let key in this.updateAircrafts) {
-      let ac = this.updateAircrafts[key];
-      if (this.hasLocation(ac) == false) continue;
+    for (const key in this.updateAircrafts) {
+      const ac = this.updateAircrafts[key];
+      if (this.hasLocation(ac) === false) continue;
       cnt += 1;
     }
     return cnt;
   }
 
   componentDidMount = async () => {
-    window.api.send('read_config', null);
-    window.api.on('read_config', (arg: string) => {
+    window.api.send("read_config", null);
+    window.api.on("read_config", (arg: string) => {
       if (arg != null) {
         this.Config = JSON.parse(arg) as Config;
 
@@ -289,7 +292,7 @@ export class Aircraft3DViewer extends React.Component<
         this.loadModelData();
       }
     });
-  }
+  };
 
   // ここに来るデータは位置情報を持っている航空機のみで良いはず
   // 2021/10/14時点
@@ -301,7 +304,7 @@ export class Aircraft3DViewer extends React.Component<
     this.removeAircraft();
     this.addAircraft();
     this.updateAircraft();
-    
+
     // console.log(`remove ${Object.keys(this.removeAircrafts).length}`)
     // console.log(`add ${Object.keys(this.addAircrafts).length}`)
     // console.log(`update ${Object.keys(this.updateAircrafts).length}`);
@@ -328,14 +331,14 @@ export class Aircraft3DViewer extends React.Component<
     this.threeRenderer.setSize(width, height);
 
     // カメラの定
-    let fov = 30;
-    let aspect = window.innerWidth / window.innerHeight;
-    let near = 0.4;
-    let far = 5000;
+    const fov = 30;
+    const aspect = window.innerWidth / window.innerHeight;
+    const near = 0.4;
+    const far = 5000;
     this.camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-    let cameraPosX = 270;
-    let cameraPosY = 500;
-    let cameraPosZ = -613;
+    const cameraPosX = 270;
+    const cameraPosY = 500;
+    const cameraPosZ = -613;
 
     this.camera.position.set(cameraPosX, cameraPosY, cameraPosZ);
     this.camera.updateMatrix();
@@ -348,8 +351,8 @@ export class Aircraft3DViewer extends React.Component<
     this.scene.add(directionalLight);
 
     // MapControllerの設定
-    let canvas = document.getElementById("three");
-    let controls = new MapControls(this.camera, canvas);
+    const canvas = document.getElementById("three");
+    const controls = new MapControls(this.camera, canvas);
     controls.enableDamping = true;
     controls.dampingFactor = 0.5;
     controls.screenSpacePanning = false;
@@ -367,7 +370,7 @@ export class Aircraft3DViewer extends React.Component<
     controls.update();
 
     // 地図の描画
-    let map = new MapImage({
+    const map = new MapImage({
       // centerLat: 42.820972,
       centerLat: this.Config.map.centerLat,
       centerLon: this.Config.map.centerLon,
@@ -377,15 +380,15 @@ export class Aircraft3DViewer extends React.Component<
       centerRow: 1,
       zoomLevel: 7,
       imagePixel: 1024,
-      api_id: this.Config.map.api_id
+      api_id: this.Config.map.api_id,
     });
 
-    //地図画像の読み込み
-    var mapLoader = new THREE.TextureLoader();
+    // 地図画像の読み込み
+    const mapLoader = new THREE.TextureLoader();
     const urlArray = map.genUrl();
 
     // 地図画像配列の確j保
-    var mapImages = new Array(map.col);
+    const mapImages = new Array(map.col);
     for (let y = 0; y < mapImages.length; y++) {
       mapImages[y] = new Array(map.col).fill(0);
     }
@@ -396,14 +399,14 @@ export class Aircraft3DViewer extends React.Component<
       }
     }
 
-    let mapHeight = 500;
-    let mapWidth = 500;
+    const mapHeight = 500;
+    const mapWidth = 500;
 
-    let mapMaterial = new Array(map.col);
-    let mapGeometry = new THREE.PlaneGeometry(mapWidth, mapHeight);
-    let maps: THREE.Mesh[][] = new Array(map.col);
+    const mapMaterial = new Array(map.col);
+    const mapGeometry = new THREE.PlaneGeometry(mapWidth, mapHeight);
+    const maps: THREE.Mesh[][] = new Array(map.col);
 
-    var mapGroup = new THREE.Object3D();
+    const mapGroup = new THREE.Object3D();
 
     for (let j = 0; j < map.col; j++) {
       mapMaterial[j] = new Array(map.col);
@@ -431,8 +434,8 @@ export class Aircraft3DViewer extends React.Component<
     this.scene.add(mapGroup);
 
     // map correction
-    let mapCorrectX = 0;
-    let mapCorrectZ = 40;
+    const mapCorrectX = 0;
+    const mapCorrectZ = 40;
     mapGroup.position.set(mapCorrectX, 0, mapCorrectZ);
 
     this.converter = new CoordinateConverter(map.mostSW, map.mostNE, bbox);

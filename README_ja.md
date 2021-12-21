@@ -2,17 +2,12 @@
 
 WIP
 
-
-
-このアプリケーションはADSBデータを3Dでプロットします.
+このアプリケーションは ADSB データを 3D でプロットします.
 ![スクリーンショット (79)](https://user-images.githubusercontent.com/48244386/140714343-315cf2a0-e4ec-4f08-b7c4-e67a35943d4f.png)
-
 
 ## 必要な環境
 
-ADSB信号を受信～デコードするツールが必要です。
-
-
+ADSB 信号を受信～デコードするツールが必要です。
 
 Windows
 
@@ -24,20 +19,17 @@ Linux
 
 共通
 
-- Virtual Radar Server (以下VRSと表記)
+- Virtual Radar Server (以下 VRS と表記)
 
-
-
-自分はR820TのSDR受信機とRTL1090とVirtualRadarServerを使っています
+自分は R820T の SDR 受信機と RTL1090 と VirtualRadarServer を使っています
 
 接続例
-- [SDRレシーバ]-[RTL1090]-[VRS]-[Airplane3DMonitor]
 
-**事前にVRSでADSBデータをデコードされていることを確認してください**
+- [SDR レシーバ]-[RTL1090]-[VRS]-[Airplane3DMonitor]
 
-またVRSでデコードされたデータをもとにプロットするのでVRSに依存しています
+**事前に VRS で ADSB データをデコードされていることを確認してください**
 
-
+また VRS でデコードされたデータをもとにプロットするので VRS に依存しています
 
 ## 依存モジュールのインストール
 

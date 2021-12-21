@@ -1,58 +1,60 @@
 body {
-    height: 100%;
-    width: 100%;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 #labelContainer {
-    position: absolute;
-    top: 0;
-    left: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .label {
-    position: absolute;
-    background-color: rgba(255, 255, 0, 0.7);
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    /* width: 100%;
+  position: absolute;
+  background-color: rgba(255, 255, 0, 0.7);
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+  /* width: 100%;
     height: 100%; */
-    pointer-events: none;
+  pointer-events: none;
 }
 
 .table {
-    position: absolute;
-    left: 2em;
-    top: 4em;
+  position: absolute;
+  left: 2em;
+  top: 4em;
 }
 table {
-    border: 1px solid #aaa;
-    border-collapse: separate;
-    border-spacing: 0;
-    border-radius: 0.3em;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  border: 1px solid #aaa;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 0.3em;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
 }
 td {
-    padding: 0.3em 0.1em;
+  padding: 0.3em 0.1em;
 }
 table thead th,
 table tbody th,
 table tbody td {
-    border-bottom: 1px solid #aaa;
+  border-bottom: 1px solid #aaa;
 }
 
 table thead th {
-    background-color: rgba(190, 190, 190, 0.8);
+  background-color: rgba(190, 190, 190, 0.8);
 }
 table tbody td {
-    background-color: rgba(255, 255, 255, 0.8);
-    text-align: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  text-align: center;
 }
 table thead th + th,
 table tbody td {
-    border-left: 1px solid #aaa;
+  border-left: 1px solid #aaa;
 }
 
 table tbody tr:last-child th,
 table tbody :last-child td {
-    border-bottom: none;
+  border-bottom: none;
 }
