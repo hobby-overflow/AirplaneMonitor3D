@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hobby-overflow/Radarbox3DHTML.git"
+    "url": "git+https://github.com/hobby-overflow/AirplaneMonitor3D.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/hobby-overflow/Radarbox3DHTML/issues"
+    "url": "https://github.com/hobby-overflow/AirplaneMonitor3D/issues"
   },
-  "homepage": "https://github.com/hobby-overflow/Radarbox3DHTML#readme",
+  "homepage": "https://github.com/hobby-overflow/AirplaneMonitor3D#readme",
   "dependencies": {
     "commitizen": "^4.2.4",
     "react": "^17.0.2",
