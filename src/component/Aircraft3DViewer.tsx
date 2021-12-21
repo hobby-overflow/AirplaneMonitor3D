@@ -54,11 +54,11 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   private hasLocation(ac: Aircraft): boolean {
-    if (ac === null) return false;
-    if (ac.info.Long === null) return false;
-    if (ac.info.Lat === null) return false;
-    if (ac.info.Alt === null) return false;
-    if (ac.info.Trak === null) return false;
+    if (ac == null) return false;
+    if (ac.info.Long == null) return false;
+    if (ac.info.Lat == null) return false;
+    if (ac.info.Alt == null) return false;
+    if (ac.info.Trak == null) return false;
 
     return true;
   }
@@ -67,7 +67,7 @@ export class Aircraft3DViewer extends React.Component<
   private plotAc = (ac: Aircraft) => {
     const icaoId = ac.info.Icao;
 
-    if (ac.object3D === null) {
+    if (ac.object3D == null) {
       // 読み込んだモデルデータをコピーする
       // デフォルトでB737を表示する
       ac.object3D = this.modelsDataPool.B737.clone();
@@ -111,7 +111,8 @@ export class Aircraft3DViewer extends React.Component<
 
   // 座標を更新する
   private setLocation = (acModel: THREE.Object3D, ac: Aircraft) => {
-    if (this.hasLocation(ac) === false) return;
+    if (this.hasLocation(ac) == false) return;
+
     const icaoId = ac.info.Icao;
     // 位置情報を持っていないなら
     if (acModel == null) {
@@ -149,7 +150,7 @@ export class Aircraft3DViewer extends React.Component<
 
     this.props.removeAcList.forEach((ac) => {
       const icaoId = ac.info.Icao;
-      if (this.hasLocation(ac) === false) return;
+      if (this.hasLocation(ac) == false) return;
 
       this.removeAircrafts[icaoId] = ac;
 
@@ -168,7 +169,7 @@ export class Aircraft3DViewer extends React.Component<
       const icaoId = newAc.info.Icao;
 
       // 座標データを持っていないなら処理をしない
-      if (this.hasLocation(newAc) === false) return;
+      if (this.hasLocation(newAc) == false) return;
 
       // プロットされていないならプロットする
       // (addAircraftの時点で座標が来なかった場合に実行される)
@@ -191,7 +192,7 @@ export class Aircraft3DViewer extends React.Component<
 
   addAircraft = () => {
     this.props.addAcList.forEach((ac) => {
-      if (this.hasLocation(ac) === false) return;
+      if (this.hasLocation(ac) == false) return;
       if (this.scene.getObjectByName(ac.info.Icao) != null) return;
 
       // // databaseに登録する
@@ -235,8 +236,8 @@ export class Aircraft3DViewer extends React.Component<
       const acModel = this.acModelDatabase[key];
 
       const screenV = new THREE.Vector3();
-      if (this.hasLocation(ac) === false) return;
-      if (acModel === null) return;
+      if (this.hasLocation(ac) == false) return;
+      if (acModel == null) return;
 
       screenV.copy(acModel.position);
       screenV.project(this.camera);
@@ -276,7 +277,7 @@ export class Aircraft3DViewer extends React.Component<
     let cnt = 0;
     for (const key in this.updateAircrafts) {
       const ac = this.updateAircrafts[key];
-      if (this.hasLocation(ac) === false) continue;
+      if (this.hasLocation(ac) == false) continue;
       cnt += 1;
     }
     return cnt;
