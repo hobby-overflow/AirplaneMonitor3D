@@ -72,13 +72,13 @@ export class Aircraft3DViewer extends React.Component<
       // デフォルトでB737を表示する
       ac.object3D = this.modelsDataPool.B737.clone();
       this.addAircrafts[icaoId] = ac;
-      if (ac.info.Type === "B738") {
+      if (ac.info.Type == "B738") {
         ac.object3D = this.modelsDataPool.B737.clone();
       }
-      if (ac.info.Type === "B77W") {
+      if (ac.info.Type == "B77W") {
         ac.object3D = this.modelsDataPool.B77W.clone();
       }
-      if (ac.info.Type === "B772") {
+      if (ac.info.Type == "B772") {
         ac.object3D = this.modelsDataPool.B77W.clone();
       }
 
