@@ -154,7 +154,7 @@ export class Aircraft3DViewer extends React.Component<
 
       this.removeAircrafts[icaoId] = ac;
 
-      if (this.scene.getObjectByName(icaoId) === null) return;
+      if (this.scene.getObjectByName(icaoId) == null) return;
 
       this.scene.remove(this.acModelDatabase[icaoId]);
       delete this.acModelDatabase[icaoId];
@@ -173,7 +173,7 @@ export class Aircraft3DViewer extends React.Component<
 
       // プロットされていないならプロットする
       // (addAircraftの時点で座標が来なかった場合に実行される)
-      if (this.scene.getObjectByName(icaoId) === null) {
+      if (this.scene.getObjectByName(icaoId) == null) {
         this.plotAc(newAc);
         this.setLabel(newAc);
         return;
@@ -248,7 +248,7 @@ export class Aircraft3DViewer extends React.Component<
       const screenPosY = (-(screenV.y - 1) * innerHeight) / 2;
       // const screenPosZ = screenV.z
 
-      if (screenPosX === 0 && screenPosY === 0) return;
+      if (screenPosX == 0 && screenPosY == 0) return;
 
       ac.screenX = screenPosX;
       ac.screenY = screenPosY;
