@@ -2,8 +2,6 @@
 
 [日本語 README](https://github.com/hobby-overflow/AirplaneMonitor3D/blob/main/README_ja.md)
 
-WIP
-
 This application is receive ADSB data to 3D plot.
 
 ![スクリーンショット (79)](https://user-images.githubusercontent.com/48244386/140714343-315cf2a0-e4ec-4f08-b7c4-e67a35943d4f.png)
@@ -24,7 +22,11 @@ Common
 
 - Virtual Radar Server (referred to as VRS)
 
+ADSB Data decode by Virtual Radar Server.
+Thanks VRS!
+
 https://www.virtualradarserver.co.uk/
+
 For example I using SDR Receiver, RTL1090 and VRS
 
 Run VRS, check receive ADSB decoded data.
