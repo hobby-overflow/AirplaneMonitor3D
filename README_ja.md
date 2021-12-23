@@ -1,9 +1,5 @@
 # AirplaneMonitor3D
 
-WIP
-
-
-
 このアプリケーションはADSBデータを3Dでプロットします.
 ![スクリーンショット (79)](https://user-images.githubusercontent.com/48244386/140714343-315cf2a0-e4ec-4f08-b7c4-e67a35943d4f.png)
 
@@ -26,7 +22,7 @@ Linux
 
 - Virtual Radar Server (以下VRSと表記)
 
-
+https://www.virtualradarserver.co.uk/
 
 自分はR820TのSDR受信機とRTL1090とVirtualRadarServerを使っています
 
@@ -37,6 +33,8 @@ Linux
 
 またVRSでデコードされたデータをもとにプロットするのでVRSに依存しています
 
+Virtual Radar Serverのおかげで実現する事ができました本当にありがとうございます！
+Thanks so much!!
 
 
 ## 依存モジュールのインストール
