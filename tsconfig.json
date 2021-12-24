@@ -9,11 +9,13 @@
     "strict": true,
     "sourceMap": true,
     "allowJs": true,
+    "outDir": "dist",
+    "forceConsistentCasingInFileNames": true
   },
   "ts-node": {
     "compilerOptions": {
       "target": "ES2015",
       "module": "CommonJS"
-    },
-  },
+    }
+  }
 }

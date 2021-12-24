@@ -1,10 +1,6 @@
 # AirplaneMonitor3D
 
-[日本語README](https://github.com/hobby-overflow/AirplaneMonitor3D/blob/main/README_ja.md)
-
-WIP
-
-
+[日本語 README](https://github.com/hobby-overflow/AirplaneMonitor3D/blob/main/README_ja.md)
 
 This application is receive ADSB data to 3D plot.
 
@@ -14,8 +10,6 @@ This application is receive ADSB data to 3D plot.
 
 Receive ADSB signal and decode application, for example dump1090.
 
-
-
 Windows
 
 - RTL1090
@@ -24,18 +18,18 @@ Linux
 
 - dump1090
 
-
 Common
 
 - Virtual Radar Server (referred to as VRS)
 
+ADSB Data decode by Virtual Radar Server.
+Thanks VRS!
 
+https://www.virtualradarserver.co.uk/
 
 For example I using SDR Receiver, RTL1090 and VRS
 
 Run VRS, check receive ADSB decoded data.
-
-
 
 ## Installation of dependent module
 
@@ -49,8 +43,6 @@ or
 npm i
 ```
 
-
-
 ## Run
 
 ```sh
@@ -62,4 +54,3 @@ or
 ```sh
 npm run dev # hot reload
 ```
-
