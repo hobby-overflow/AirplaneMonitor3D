@@ -58,3 +58,7 @@ table tbody tr:last-child th,
 table tbody :last-child td {
   border-bottom: none;
 }
+
+table tr:nth-child(2n + 1) {
+  background: #999;
+}
