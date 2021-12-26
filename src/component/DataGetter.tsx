@@ -1,15 +1,19 @@
 import React from "react";
 import { AircraftDatabase } from "./AircraftDatabase";
 import { AircraftList } from "../class/AircraftList";
+import { StatusMonitor } from "./StatusMonitor";
 
-export class DataGetter extends React.Component<{}, { acList: any }> {
+export class DataGetter extends React.Component<
+  {},
+  { acList: any; statusCode: number; statusMessage: string }
+> {
   private intervalID: any;
   private config!: Config;
 
   private signalSimulateMode!: boolean;
   constructor(props: any) {
     super(props);
-    this.state = { acList: null };
+    this.state = { acList: null, statusCode: 0, statusMessage: "" };
   }
 
   init = async () => {
@@ -33,7 +37,7 @@ export class DataGetter extends React.Component<{}, { acList: any }> {
   };
 
   tick = () => {
-    let addr;
+    let addr: string;
     if (this.signalSimulateMode === true) {
       addr = this.config.access_url.simulate;
     } else {
@@ -42,11 +46,37 @@ export class DataGetter extends React.Component<{}, { acList: any }> {
 
     fetch(addr, { method: "GET" })
       .then((response) => response.json())
-      .then((json) => this.setState({ acList: json.acList }))
-      .catch((error) => console.error(error));
+      .then((json) =>
+        this.setState({
+          acList: json.acList,
+          statusCode: 0,
+          statusMessage: "Data receving",
+        })
+      )
+      .catch((error) => {
+        if (this.signalSimulateMode === true) {
+          this.setState({
+            statusCode: 1,
+            statusMessage: "Can't access SignalSimulator...",
+          });
+        } else {
+          this.setState({
+            statusCode: 1,
+            statusMessage: "Can't access Virtual Radar Server...",
+          });
+        }
+      });
   };
 
   render = () => {
-    return <AircraftDatabase acList={new AircraftList(this.state.acList)} />;
+    return (
+      <>
+        <AircraftDatabase acList={new AircraftList(this.state.acList)} />
+        <StatusMonitor
+          statusCode={this.state.statusCode}
+          statusMessage={this.state.statusMessage}
+        />
+      </>
+    );
   };
 }
