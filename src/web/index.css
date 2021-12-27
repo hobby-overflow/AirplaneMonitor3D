@@ -64,6 +64,7 @@ table tr:nth-child(2n + 1) {
 }
 
 #statusMonitor {
+  padding: 0.2em 0.4em;
   background-color: #ddd;
   position: absolute;
   top: 0.5em;
