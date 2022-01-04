@@ -8,8 +8,18 @@ export class StatusMonitor extends React.Component<
     super(props);
   }
 
+  private elementId = "statusMonitor";
+
+  private getElement() {
+    return document.getElementById(this.elementId) as HTMLParagraphElement;
+  }
+  componentDidMount = () => {
+    let elem = this.getElement();
+    elem.style.visibility = "collapse";
+  };
   componentDidUpdate = () => {
-    let elem = document.getElementById("statusMonitor");
+    let elem = this.getElement();
+    elem.style.visibility = "visible";
     if (elem != null) {
       if (this.props.statusCode == 0) {
         elem.style.color = "darkgreen";
@@ -21,6 +31,6 @@ export class StatusMonitor extends React.Component<
   };
 
   render() {
-    return <p id="statusMonitor">{this.props.statusMessage}</p>;
+    return <p id={this.elementId}>{this.props.statusMessage}</p>;
   }
 }
