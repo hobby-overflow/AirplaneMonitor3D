@@ -15,6 +15,12 @@ export class AircraftTable extends React.Component<
 
   private acDataBase: { [key: string]: Aircraft } = {};
 
+  private isNullAcDataBase() {
+    for (let item in this.acDataBase) {
+      return false;
+    }
+    return true;
+  }
   private getElement() {
     return document.getElementById("table") as HTMLTableElement;
   }
@@ -25,8 +31,11 @@ export class AircraftTable extends React.Component<
   }
 
   componentDidUpdate() {
-    let elem = this.getElement();
-    elem.style.visibility = "visible";
+    if (this.isNullAcDataBase() == false) {
+      let elem = this.getElement();
+      elem.style.visibility = "visible";
+    }
+
     this.props.removeAcList.forEach((item) => {
       delete this.acDataBase[item.info.Icao];
     });
