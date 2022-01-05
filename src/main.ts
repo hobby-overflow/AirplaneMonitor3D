@@ -1,3 +1,5 @@
+// 参考URL https://zenn.dev/sprout2000/articles/5d7b350c2e85bc
+
 import path from 'path';
 import { BrowserWindow, app, session, ipcMain } from 'electron';
 const os = require('os');
