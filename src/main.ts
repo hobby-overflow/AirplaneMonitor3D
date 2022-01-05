@@ -1,24 +1,24 @@
-import path from "path";
-import { BrowserWindow, app, session, ipcMain } from "electron";
-const os = require("os");
-import { searchDevtools } from "electron-search-devtools";
-import * as fs from "fs";
+import path from 'path';
+import { BrowserWindow, app, session, ipcMain } from 'electron';
+const os = require('os');
+import { searchDevtools } from 'electron-search-devtools';
+import * as fs from 'fs';
 
 const isDev = true;
 
 // 開発モードの場合はホットリロードする
-if (process.platform === "win32") {
-  require("electron-reload")(__dirname, {
+if (process.platform === 'win32') {
+  require('electron-reload')(__dirname, {
     electron: path.resolve(
       __dirname,
-      "../node_modules/electron/dist/electron.exe"
+      '../node_modules/electron/dist/electron.exe'
     ),
   });
 }
 
-if (process.platform === "linux") {
-  require("electron-reload")(__dirname, {
-    electron: path.resolve(__dirname, "../node_modules/electron/dist/electron"),
+if (process.platform === 'linux') {
+  require('electron-reload')(__dirname, {
+    electron: path.resolve(__dirname, '../node_modules/electron/dist/electron'),
   });
 }
 // BrowserWindow インスタンスを作成する関数
@@ -30,22 +30,22 @@ async function createWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.resolve(__dirname, "preload.js"),
+      preload: path.resolve(__dirname, 'preload.js'),
     },
   });
 
-  ipcMain.on("read_config", () => {
-    let data = fs.readFileSync("./dist/config.json", "utf-8");
-    mainWindow.webContents.send("read_config", data);
+  ipcMain.on('read_config', () => {
+    let data = fs.readFileSync('./dist/config.json', 'utf-8');
+    mainWindow.webContents.send('read_config', data);
     return;
   });
 
   // 開発モードの場合はデベロッパーツールを開く
   if (isDev) {
-    mainWindow.webContents.openDevTools({ mode: "detach" });
+    mainWindow.webContents.openDevTools({ mode: 'detach' });
   }
   // レンダラープロセスをロード
-  mainWindow.loadFile("dist/index.html");
+  mainWindow.loadFile('dist/index.html');
 
   // if (process.env.WEBPACK_DEV_SERVER_URL) {
   //     await mainWindow.loadURL(process.env.WEBPACK_DEV_SERVER_URL as string);
@@ -55,7 +55,7 @@ async function createWindow() {
 
 app.whenReady().then(async () => {
   if (isDev) {
-    const devtools = await searchDevtools("REACT");
+    const devtools = await searchDevtools('REACT');
     if (devtools) {
       await session.defaultSession.loadExtension(devtools, {
         allowFileAccess: true,
@@ -68,4 +68,4 @@ app.whenReady().then(async () => {
 });
 
 // すべてのウィンドウが閉じられたらアプリを終了する
-app.once("window-all-closed", () => app.quit());
+app.once('window-all-closed', () => app.quit());

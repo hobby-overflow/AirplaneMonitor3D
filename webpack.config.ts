@@ -1,39 +1,39 @@
-import path from "path";
+import path from 'path';
 
 /** エディタで補完を効かせるために型定義をインポート */
-import { Configuration } from "webpack";
+import { Configuration } from 'webpack';
 
-import HtmlWebpackPlugin from "html-webpack-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import CopyWebpackPlugin from "copy-webpack-plugin";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
+import CopyWebpackPlugin from 'copy-webpack-plugin';
 
 const config: Configuration = {
-  mode: "development",
+  mode: 'development',
   // セキュリティ対策として 'electron-renderer' ターゲットは使用しない
-  target: "web",
+  target: 'web',
   node: {
     __dirname: false,
     __filename: false,
   },
   resolve: {
-    extensions: [".js", ".ts", ".jsx", ".tsx", ".json"],
+    extensions: ['.js', '.ts', '.jsx', '.tsx', '.json'],
   },
   entry: {
     // エントリーファイル
-    app: "./src/index.tsx",
+    app: './src/index.tsx',
   },
   output: {
     // バンドルファイルの出力先（ここではプロジェクト直下の 'dist' ディレクトリ）
-    path: path.resolve(__dirname, "dist"),
+    path: path.resolve(__dirname, 'dist'),
     // webpack@5 + electron では必須の設定
-    publicPath: "./",
+    publicPath: './',
     /**
      * エントリーセクションで名前を付けていれば [name] が使える
      * ここでは 'app.js' として出力される
      */
-    filename: "[name].js",
+    filename: '[name].js',
     // 画像などのアセット類は 'assets' フォルダへ配置する
-    assetModuleFilename: "assets/[name][ext]",
+    assetModuleFilename: 'assets/[name][ext]',
   },
   module: {
     rules: [
@@ -44,7 +44,7 @@ const config: Configuration = {
          */
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: "ts-loader",
+        use: 'ts-loader',
       },
       {
         /** 拡張子 '.css' （正規表現）のファイル */
@@ -53,7 +53,7 @@ const config: Configuration = {
         use: [
           MiniCssExtractPlugin.loader,
           {
-            loader: "css-loader",
+            loader: 'css-loader',
           },
         ],
       },
@@ -62,15 +62,15 @@ const config: Configuration = {
         test: /\.(bmp|ico|gif|jpe?g|png|svg|ttf|eot|woff?2?)$/,
         /** アセット類も同様に asset/inline は使用しない */
         /** なお、webpack@5.x では file-loader or url-loader は不要になった */
-        type: "asset/resource",
+        type: 'asset/resource',
       },
     ],
   },
   plugins: [
     new CopyWebpackPlugin({
       patterns: [
-        { from: "./src/assets", to: "./" },
-        { from: "./src/config/config.json", to: "./" },
+        { from: './src/assets', to: './' },
+        { from: './src/config/config.json', to: './' },
       ],
     }),
     new MiniCssExtractPlugin(),
@@ -79,10 +79,10 @@ const config: Configuration = {
      * HTMLファイルを出力するプラグイン
      */
     new HtmlWebpackPlugin({
-      template: "./src/web/index.html",
-      filename: "index.html",
-      scriptLoading: "blocking",
-      inject: "body",
+      template: './src/web/index.html',
+      filename: 'index.html',
+      scriptLoading: 'blocking',
+      inject: 'body',
       minify: false,
     }),
   ],
@@ -93,7 +93,7 @@ const config: Configuration = {
    * electron のデベロッパーコンソールに 'Uncaught EvalError' が
    * 表示されてしまうことに注意
    */
-  devtool: "inline-source-map",
+  devtool: 'inline-source-map',
 };
 
 export default config;

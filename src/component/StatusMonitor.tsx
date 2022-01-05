@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 export class StatusMonitor extends React.Component<
   { statusCode: number; statusMessage: string },
@@ -8,24 +8,24 @@ export class StatusMonitor extends React.Component<
     super(props);
   }
 
-  private elementId = "statusMonitor";
+  private elementId = 'statusMonitor';
 
   private getElement() {
     return document.getElementById(this.elementId) as HTMLParagraphElement;
   }
   componentDidMount = () => {
     let elem = this.getElement();
-    elem.style.visibility = "collapse";
+    elem.style.visibility = 'collapse';
   };
   componentDidUpdate = () => {
     let elem = this.getElement();
-    elem.style.visibility = "visible";
+    elem.style.visibility = 'visible';
     if (elem != null) {
       if (this.props.statusCode == 0) {
-        elem.style.color = "darkgreen";
+        elem.style.color = 'darkgreen';
       }
       if (this.props.statusCode != 0) {
-        elem.style.color = "red";
+        elem.style.color = 'red';
       }
     }
   };

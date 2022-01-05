@@ -1,5 +1,5 @@
-import React from "react";
-import * as THREE from "three";
+import React from 'react';
+import * as THREE from 'three';
 
 // export const Sample1 = () => {
 export class ThreeSample extends React.Component<{ scale: number }, {}> {
@@ -11,7 +11,7 @@ export class ThreeSample extends React.Component<{ scale: number }, {}> {
     const height = innerHeight;
 
     const renderer: THREE.WebGLRenderer = new THREE.WebGLRenderer({
-      canvas: document.querySelector("#three") as HTMLCanvasElement,
+      canvas: document.querySelector('#three') as HTMLCanvasElement,
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);

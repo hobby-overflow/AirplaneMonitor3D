@@ -5,7 +5,7 @@ declare namespace THREE {
     centerGeometry: THREE.Geometry | false;
     convertUpAxis: boolean;
     subdivideFaces: boolean;
-    upAxis: "X" | "Y" | "Z";
+    upAxis: 'X' | 'Y' | 'Z';
     defaultEnvMap: THREE.Mapping;
   }
 

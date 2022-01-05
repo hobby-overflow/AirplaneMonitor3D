@@ -1,4 +1,4 @@
-import { Aircraft } from "./Aircraft";
+import { Aircraft } from './Aircraft';
 
 export class AircraftList {
   public acList: Array<Aircraft> = [];

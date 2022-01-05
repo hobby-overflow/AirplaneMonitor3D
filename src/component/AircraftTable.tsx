@@ -1,5 +1,5 @@
-import React, { ReactElement } from "react";
-import { Aircraft } from "../class/Aircraft";
+import React, { ReactElement } from 'react';
+import { Aircraft } from '../class/Aircraft';
 
 export class AircraftTable extends React.Component<
   {
@@ -22,18 +22,18 @@ export class AircraftTable extends React.Component<
     return true;
   }
   private getElement() {
-    return document.getElementById("table") as HTMLTableElement;
+    return document.getElementById('table') as HTMLTableElement;
   }
 
   componentDidMount() {
     let elem = this.getElement();
-    elem.style.visibility = "collapse";
+    elem.style.visibility = 'collapse';
   }
 
   componentDidUpdate() {
     if (this.isNullAcDataBase() == false) {
       let elem = this.getElement();
-      elem.style.visibility = "visible";
+      elem.style.visibility = 'visible';
     }
 
     this.props.removeAcList.forEach((item) => {
@@ -53,14 +53,14 @@ export class AircraftTable extends React.Component<
     var acTable = new Array<ReactElement>();
 
     const hasLocation = (ac: Aircraft) => {
-      if (ac == null) return "❌";
-      if (ac.info.Long == null) return "❌";
-      if (ac.info.Lat == null) return "❌";
-      if (ac.info.Alt == null) return "❌";
-      if (ac.info.Trak == null) return "❌";
+      if (ac == null) return '❌';
+      if (ac.info.Long == null) return '❌';
+      if (ac.info.Lat == null) return '❌';
+      if (ac.info.Alt == null) return '❌';
+      if (ac.info.Trak == null) return '❌';
 
       // return true;
-      return "✅";
+      return '✅';
     };
 
     Object.values(this.acDataBase).forEach((item) => {

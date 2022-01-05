@@ -1,7 +1,7 @@
-import React from "react";
-import { AircraftDatabase } from "./AircraftDatabase";
-import { AircraftList } from "../class/AircraftList";
-import { StatusMonitor } from "./StatusMonitor";
+import React from 'react';
+import { AircraftDatabase } from './AircraftDatabase';
+import { AircraftList } from '../class/AircraftList';
+import { StatusMonitor } from './StatusMonitor';
 
 export class DataGetter extends React.Component<
   {},
@@ -13,12 +13,12 @@ export class DataGetter extends React.Component<
   private signalSimulateMode!: boolean;
   constructor(props: any) {
     super(props);
-    this.state = { acList: null, statusCode: 0, statusMessage: "" };
+    this.state = { acList: null, statusCode: 0, statusMessage: '' };
   }
 
   init = async () => {
-    await window.api.send("read_config", null);
-    await window.api.on("read_config", (arg: string) => {
+    await window.api.send('read_config', null);
+    await window.api.on('read_config', (arg: string) => {
       if (arg != null) {
         this.config = JSON.parse(arg) as Config;
         this.signalSimulateMode = this.config.mode.simulation;
@@ -44,13 +44,13 @@ export class DataGetter extends React.Component<
       addr = this.config.access_url.realtime;
     }
 
-    fetch(addr, { method: "GET" })
+    fetch(addr, { method: 'GET' })
       .then((response) => response.json())
       .then((json) =>
         this.setState({
           acList: json.acList,
           statusCode: 0,
-          statusMessage: "Data receving",
+          statusMessage: 'Data receving',
         })
       )
       .catch((error) => {

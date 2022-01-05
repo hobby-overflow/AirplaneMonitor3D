@@ -1,8 +1,8 @@
-import React from "react";
-import { Aircraft } from "../class/Aircraft";
-import { AircraftList } from "../class/AircraftList";
-import { Aircraft3DViewer } from "./Aircraft3DViewer";
-import { AircraftTable } from "./AircraftTable";
+import React from 'react';
+import { Aircraft } from '../class/Aircraft';
+import { AircraftList } from '../class/AircraftList';
+import { Aircraft3DViewer } from './Aircraft3DViewer';
+import { AircraftTable } from './AircraftTable';
 
 // ここがコントローラーを担うことになってしまった
 export class AircraftDatabase extends React.Component<

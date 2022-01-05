@@ -1,8 +1,8 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { DataGetter } from "./component/DataGetter";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { DataGetter } from './component/DataGetter';
 
-import "./web/index.css";
+import './web/index.css';
 
 const App = (): JSX.Element => {
   console.log(new Date().toLocaleTimeString());
@@ -14,4 +14,4 @@ const App = (): JSX.Element => {
     </>
   );
 };
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById('root'));

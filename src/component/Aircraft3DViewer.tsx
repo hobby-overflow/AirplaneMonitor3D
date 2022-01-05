@@ -1,14 +1,14 @@
-import React from "react";
-import * as THREE from "three";
+import React from 'react';
+import * as THREE from 'three';
 
-import { Aircraft } from "../class/Aircraft";
-import { MapImage } from "../class/MapGetter";
-import { CoordinateConverter } from "../class/Converter";
+import { Aircraft } from '../class/Aircraft';
+import { MapImage } from '../class/MapGetter';
+import { CoordinateConverter } from '../class/Converter';
 
-import { MapControls } from "../lib/OrbitControls";
-import { ColladaLoader } from "../lib/ColladaLoader.js";
+import { MapControls } from '../lib/OrbitControls';
+import { ColladaLoader } from '../lib/ColladaLoader.js';
 
-import SkyPanoramic from "../assets/SkyPanoramic_mini.png";
+import SkyPanoramic from '../assets/SkyPanoramic_mini.png';
 
 export class Aircraft3DViewer extends React.Component<
   {
@@ -40,8 +40,8 @@ export class Aircraft3DViewer extends React.Component<
 
   private loadModelData() {
     const modelFiles: { [key: string]: string } = {
-      B737: "./B737-800.dae",
-      B77W: "./B777-300ER.dae",
+      B737: './B737-800.dae',
+      B77W: './B777-300ER.dae',
     };
     const loader = new ColladaLoader();
     Object.keys(modelFiles).forEach((key) => {
@@ -72,13 +72,13 @@ export class Aircraft3DViewer extends React.Component<
       // デフォルトでB737を表示する
       ac.object3D = this.modelsDataPool.B737.clone();
       this.addAircrafts[icaoId] = ac;
-      if (ac.info.Type == "B738") {
+      if (ac.info.Type == 'B738') {
         ac.object3D = this.modelsDataPool.B737.clone();
       }
-      if (ac.info.Type == "B77W") {
+      if (ac.info.Type == 'B77W') {
         ac.object3D = this.modelsDataPool.B77W.clone();
       }
-      if (ac.info.Type == "B772") {
+      if (ac.info.Type == 'B772') {
         ac.object3D = this.modelsDataPool.B77W.clone();
       }
 
@@ -100,7 +100,7 @@ export class Aircraft3DViewer extends React.Component<
       yZeroPos,
     ]);
     const line = new THREE.Line(lineGeometry, lineMaterial);
-    line.name = "line_" + icaoId;
+    line.name = 'line_' + icaoId;
     this.acModelDatabase[icaoId].attach(line);
 
     console.log(`plotted! ${ac.info.Reg} ${new Date().toLocaleTimeString()}`);
@@ -204,11 +204,11 @@ export class Aircraft3DViewer extends React.Component<
   };
 
   setLabel = (ac: Aircraft) => {
-    const elem = document.getElementById("labelContainer");
+    const elem = document.getElementById('labelContainer');
     if (elem != null) {
-      const p = document.createElement("p");
+      const p = document.createElement('p');
       p.id = ac.info.Icao;
-      p.className = "label";
+      p.className = 'label';
       p.innerText = ac.info.label;
       elem.appendChild(p);
     }
@@ -256,8 +256,8 @@ export class Aircraft3DViewer extends React.Component<
       const labelElem = document.getElementById(ac.info.Icao);
       if (labelElem != null) {
         labelElem.innerText = ac.info.label;
-        labelElem.style.left = screenPosX.toString() + "px";
-        labelElem.style.top = screenPosY.toString() + "px";
+        labelElem.style.left = screenPosX.toString() + 'px';
+        labelElem.style.top = screenPosY.toString() + 'px';
       }
     });
   };
@@ -284,8 +284,8 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   componentDidMount = async () => {
-    window.api.send("read_config", null);
-    window.api.on("read_config", (arg: string) => {
+    window.api.send('read_config', null);
+    window.api.on('read_config', (arg: string) => {
       if (arg != null) {
         this.Config = JSON.parse(arg) as Config;
 
@@ -325,7 +325,7 @@ export class Aircraft3DViewer extends React.Component<
     const width = innerWidth;
     const height = innerHeight;
     this.threeRenderer = new THREE.WebGLRenderer({
-      canvas: document.querySelector("#three") as HTMLCanvasElement,
+      canvas: document.querySelector('#three') as HTMLCanvasElement,
       antialias: false,
     });
     this.threeRenderer.setPixelRatio(window.devicePixelRatio);
@@ -352,7 +352,7 @@ export class Aircraft3DViewer extends React.Component<
     this.scene.add(directionalLight);
 
     // MapControllerの設定
-    const canvas = document.getElementById("three");
+    const canvas = document.getElementById('three');
     const controls = new MapControls(this.camera, canvas);
     controls.enableDamping = true;
     controls.dampingFactor = 0.5;
