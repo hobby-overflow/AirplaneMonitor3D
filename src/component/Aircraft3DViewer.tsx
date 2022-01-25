@@ -206,11 +206,11 @@ export class Aircraft3DViewer extends React.Component<
   setLabel = (ac: Aircraft) => {
     const elem = document.getElementById('labelContainer');
     if (elem != null) {
-      const p = document.createElement('p');
-      p.id = ac.info.Icao;
-      p.className = 'label';
-      p.innerText = ac.info.label;
-      elem.appendChild(p);
+      const nobr = document.createElement('nobr');
+      nobr.id = ac.info.Icao;
+      nobr.className = 'label';
+      nobr.innerText = ac.info.label;
+      elem.appendChild(nobr);
     }
   };
 
