@@ -13,6 +13,7 @@
   },
   "view": {
     "pixelDensity": 100,
-    "lineWidth": 8
+    "lineWidth": 8,
+    "antialias": false
   }
 }

@@ -326,7 +326,7 @@ export class Aircraft3DViewer extends React.Component<
     const height = innerHeight;
     this.threeRenderer = new THREE.WebGLRenderer({
       canvas: document.querySelector('#three') as HTMLCanvasElement,
-      antialias: false,
+      antialias: this.Config.view.antialias,
     });
     this.threeRenderer.setPixelRatio(window.devicePixelRatio);
     this.threeRenderer.setSize(width, height);

@@ -20,5 +20,6 @@ type Config = {
   view: {
     pixelDensity: number;
     lineWidth: number;
+    antialias: boolean;
   };
 };
