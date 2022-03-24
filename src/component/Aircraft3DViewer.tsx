@@ -322,14 +322,12 @@ export class Aircraft3DViewer extends React.Component<
   }
 
   init() {
-    const width = innerWidth;
-    const height = innerHeight;
     this.threeRenderer = new THREE.WebGLRenderer({
       canvas: document.querySelector('#three') as HTMLCanvasElement,
       antialias: this.Config.view.antialias,
     });
     this.threeRenderer.setPixelRatio(window.devicePixelRatio);
-    this.threeRenderer.setSize(width, height);
+    this.threeRenderer.setSize(innerWidth, innerHeight);
 
     // カメラの定
     const fov = 30;
