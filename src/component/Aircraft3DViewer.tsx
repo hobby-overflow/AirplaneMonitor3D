@@ -221,6 +221,11 @@ export class Aircraft3DViewer extends React.Component<
     }
   };
 
+  convertRemToPx = (rem: number): number => {
+    let fontSize = getComputedStyle(document.documentElement).fontSize;
+    return rem * parseFloat(fontSize);
+  };
+
   // ここからワールド空間の設定やレンダリング処理
   private scene = new THREE.Scene();
   private camera = new THREE.PerspectiveCamera();
@@ -244,20 +249,28 @@ export class Aircraft3DViewer extends React.Component<
       if (screenV.z > 1.0) return;
       // let screenPosX, screenPosY, screenPosZ
 
-      const screenPosX = ((screenV.x + 1) * innerWidth) / 2;
-      const screenPosY = (-(screenV.y - 1) * innerHeight) / 2;
+      const posX = (() => {
+        const ret = ((screenV.x + 1) * innerWidth) / 2;
+        return ret + this.convertRemToPx(1);
+      })();
+
+      const posY = (() => {
+        const ret = (-(screenV.y - 1) * innerHeight) / 2;
+        return ret - this.convertRemToPx(0.5);
+      })();
       // const screenPosZ = screenV.z
 
-      if (screenPosX == 0 && screenPosY == 0) return;
+      if (posX == 0 && posY == 0) return;
 
-      ac.screenX = screenPosX;
-      ac.screenY = screenPosY;
+      ac.screenX = posX;
+      ac.screenY = posY - this.convertRemToPx(0.5);
+      console.log(ac.screenY - posY);
 
       const labelElem = document.getElementById(ac.info.Icao);
       if (labelElem != null) {
         labelElem.innerText = ac.info.label;
-        labelElem.style.left = screenPosX.toString() + 'px';
-        labelElem.style.top = screenPosY.toString() + 'px';
+        labelElem.style.left = posX.toString() + 'px';
+        labelElem.style.top = posY.toString() + 'px';
       }
     });
   };
