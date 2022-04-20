@@ -249,28 +249,30 @@ export class Aircraft3DViewer extends React.Component<
       if (screenV.z > 1.0) return;
       // let screenPosX, screenPosY, screenPosZ
 
-      const posX = (() => {
-        const ret = ((screenV.x + 1) * innerWidth) / 2;
-        return ret + this.convertRemToPx(1);
-      })();
-
-      const posY = (() => {
-        const ret = (-(screenV.y - 1) * innerHeight) / 2;
-        return ret - this.convertRemToPx(0.5);
-      })();
+      const posX = ((screenV.x + 1) * innerWidth) / 2;
+      const posY = (-(screenV.y - 1) * innerHeight) / 2;
       // const screenPosZ = screenV.z
 
       if (posX == 0 && posY == 0) return;
 
-      ac.screenX = posX;
-      ac.screenY = posY - this.convertRemToPx(0.5);
-      console.log(ac.screenY - posY);
+      // 不要？
+      // ac.screenX = posX;
+      // ac.screenY = posY;
 
       const labelElem = document.getElementById(ac.info.Icao);
+      const labelOffset = this.convertRemToPx(3);
       if (labelElem != null) {
+        const centerY = labelElem.clientHeight / 2;
+        const centerX = labelElem.clientWidth / 2;
         labelElem.innerText = ac.info.label;
-        labelElem.style.left = posX.toString() + 'px';
-        labelElem.style.top = posY.toString() + 'px';
+
+        labelElem.style.left = (() => {
+          const ret = posX - centerX;
+          return (ret + labelOffset).toString() + 'px';
+        })();
+        labelElem.style.top = (() => {
+          return (posY - centerY).toString() + 'px';
+        })();
       }
     });
   };
