@@ -20,7 +20,7 @@ const config: Configuration = {
   },
   entry: {
     // エントリーファイル
-    app: './src/index.tsx',
+    app: './src/App.tsx',
   },
   output: {
     // バンドルファイルの出力先（ここではプロジェクト直下の 'dist' ディレクトリ）
