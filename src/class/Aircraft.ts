@@ -45,18 +45,16 @@ export class Aircraft {
   public object3D?: Object3D;
 
   public isTimeout() {
-    // 毎フレーム最後に受信した時間を確認する
-    // getTimeは何の単位なのか?? 秒単位ではないミリ秒？: ミリ秒だった
+    // getTime units is milliseconds (ms)
     let lastReceivedAt = new Date().getTime() - this.receivetAt.getTime();
-    let diffSec = lastReceivedAt / 1000;
+    let diffMs = lastReceivedAt / 1000;
 
-    if (diffSec >= 15) return true;
+    if (diffMs >= 15) return true;
     return false;
   }
 
   public syncAircraft(newAc: Aircraft) {
     let object3d = this.object3D;
-    // object3Dをnullにしたくい
     if (newAc.object3D == null) {
       newAc.object3D = object3d;
     }
