@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build-x32": "electron-packager ./src/ airplanemonitor3d --platform=win32 --arch=ia32 --electron-version=5.0.11 --overwrite",
-    "build-x64": "electron-packager ./src/ airplanemonitor3d --platform=win32 --arch=x64 --electron-version=5.0.11 --overwrite",
+    "build-x64": "electron-packager . airplanemonitor3d --platform=win32 --arch=x64 --electron-version=5.0.11 --overwrite",
     "start": "electron src",
     "predev": "rimraf dist",
     "dev": "run-p dev:*",
@@ -47,6 +47,7 @@
     "css-loader": "^6.3.0",
     "electron": "^15.0.0",
     "electron-builder": "^23.0.3",
+    "electron-packager": "^15.5.1",
     "electron-reload": "^2.0.0-alpha.1",
     "electron-search-devtools": "^1.5.1",
     "eslint": "^7.32.0",
