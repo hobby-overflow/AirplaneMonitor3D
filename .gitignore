@@ -3,3 +3,5 @@ node_modules/
 dist
 .vscode
 *.vim
+Token.ts
+airplanemonitor3d-win32-x64/
