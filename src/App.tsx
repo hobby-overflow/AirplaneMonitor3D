@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-// import { DataGetter } from './component/DataGetter';
-import { MapViewer } from './component/MapViewer';
+
+import { AxiosGet } from './component/AxiosGet';
 
 import './web/index.css';
 
@@ -10,7 +10,8 @@ const App = (): JSX.Element => {
     <>
       {/* <ThreeSample scale={300} /> */}
       {/* <PixiSample /> */}
-      <MapViewer />
+      {/* <MapViewer /> */}
+      <AxiosGet value={ null } />
     </>
   );
 };

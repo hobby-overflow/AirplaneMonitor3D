@@ -18,7 +18,7 @@
     "run:tsc": "tsc -p tsconfig.main.json",
     "run:webpack": "webpack",
     "run:prerun": "rimraf dist",
-    "esbuild": "run-p esbuild:*",
+    "es": "run-p esbuild:*",
     "esbuild:esbuild": "node ./esbuild.js",
     "esbuild:electron": "wait-on ./dist/index.html ./dist/main.js && electron ."
   },
@@ -33,10 +33,10 @@
   },
   "homepage": "https://github.com/hobby-overflow/AirplaneMonitor3D#readme",
   "dependencies": {
+    "axios": "^0.27.2",
     "mapbox-gl": "^2.8.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "swr": "^1.3.0",
     "three": "^0.132.2"
   },
   "devDependencies": {
