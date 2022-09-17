@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import { AircraftDatabase } from './AircraftDatabase';
 import { AircraftList } from '../class/AircraftList';
 import { StatusMonitor } from './StatusMonitor';
@@ -11,6 +12,9 @@ export class DataGetter extends React.Component<
   private config!: Config;
 
   private signalSimulateMode!: boolean;
+
+  private isReqestSending = false;
+
   constructor(props: any) {
     super(props);
     this.state = { acList: null, statusCode: 0, statusMessage: '' };
@@ -22,13 +26,15 @@ export class DataGetter extends React.Component<
       if (arg != null) {
         this.config = JSON.parse(arg) as Config;
         this.signalSimulateMode = this.config.mode.simulation;
-        // この書き方の参考URL: https://ja.reactjs.org/docs/state-and-lifecycle.html
-        this.intervalID = setInterval(() => this.tick(), 1000);
       }
     });
+    // この書き方の参考URL: https://ja.reactjs.org/docs/state-and-lifecycle.html
+    this.intervalID = setInterval(() => this.tick(), 1000);
+    console.log("setInterval in init()")
   };
 
   componentDidMount = () => {
+    console.log("DataGetter didMount!!")
     this.init();
   };
 
@@ -44,6 +50,33 @@ export class DataGetter extends React.Component<
       addr = this.config.access_url.realtime;
     }
 
+    if (this.isReqestSending == false) {
+      this.isReqestSending = true
+      axios.get(addr)
+      .then((response) => {
+        this.setState({
+          acList: response.data.acList,
+          statusCode: 0,
+          statusMessage: 'Data receving'
+        })
+      })
+      .catch((error) => {
+        if (this.signalSimulateMode === true) {
+          this.setState({
+            statusCode: 1,
+            statusMessage: "Can't access SignalSimulator..."
+          })
+        } else {
+          this.setState({
+            statusCode: 1,
+            statusMessage: "Can't access Virtual Radar Server...",
+          })
+        }
+      })
+      .finally(() => this.isReqestSending = false)
+    }
+
+    /*
     fetch(addr, { method: 'GET' })
       .then((response) => response.json())
       .then((json) =>
@@ -66,6 +99,7 @@ export class DataGetter extends React.Component<
           });
         }
       });
+    */
   };
 
   render = () => {
