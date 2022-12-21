@@ -1,19 +1,18 @@
-import mapboxgl from "mapbox-gl";
-import TOKEN from "./Token";
+import mapboxgl from 'mapbox-gl';
+import TOKEN from './Token';
 
-const satellite = 'mapbox://styles/mapbox/satellite-v9'
-const satellite_streets = 'mapbox://styles/mapbox/satellite-streets-v11'
+const satellite = 'mapbox://styles/mapbox/satellite-v9';
+const satellite_streets = 'mapbox://styles/mapbox/satellite-streets-v11';
 
 let Config: Config;
 
 export const MapInitialize = () => {
-
   window.api.send('read_config', null);
   window.api.on('read_config', (arg: string) => {
     if (arg != null) {
       Config = JSON.parse(arg) as Config;
     }
-  })
+  });
 
   // TOKEN is not use?
   const mapCenter = new mapboxgl.LngLat(141.6769, 42.7831);
@@ -26,7 +25,7 @@ export const MapInitialize = () => {
     style: satellite,
     accessToken: Config.map.api_id,
   });
-  return map
-}
+  return map;
+};
 
 export default MapInitialize;

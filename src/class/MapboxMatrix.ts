@@ -1,4 +1,4 @@
-import mapboxgl from "mapbox-gl";
+import mapboxgl from 'mapbox-gl';
 import { LngLat, MercatorCoordinate } from 'mapbox-gl';
 import { Matrix4, Vector3 } from 'three';
 
@@ -6,16 +6,16 @@ export type ModelTransform = {
   translateX: number;
   translateY: number;
   translateZ: number;
-  rotateX :number;
-  rotateY :number;
-  rotateZ :number;
-  scale :number;
-}
+  rotateX: number;
+  rotateY: number;
+  rotateZ: number;
+  scale: number;
+};
 
 export type Matrixes = {
   m: Matrix4;
   l: Matrix4;
-}
+};
 
 export class MapboxMatrix {
   private origin?: LngLat;
@@ -45,7 +45,7 @@ export class MapboxMatrix {
     };
 
     return this.transform;
-  }
+  };
   public calculateCameraMatrix = (matrix: number[]) => {
     const rotationX = new Matrix4().makeRotationAxis(
       new Vector3(1, 0, 0),
@@ -77,13 +77,13 @@ export class MapboxMatrix {
       .multiply(rotationX)
       .multiply(rotationY)
       .multiply(rotationZ);
-    return { m: m, l: l }
-  }
+    return { m: m, l: l };
+  };
 
   public getOrigin = () => {
     return this.origin!;
-  }
+  };
   public getTransform = () => {
     return this.transform!;
-  }
+  };
 }

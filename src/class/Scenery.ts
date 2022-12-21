@@ -5,7 +5,9 @@ import { GeoMath } from './GeoMath';
 import { ColladaLoader } from '../lib/ColladaLoader.js';
 
 export class Scenery {
-  public getScene = () => { return this.scene; }
+  public getScene = () => {
+    return this.scene;
+  };
 
   private scene: THREE.Scene;
 
@@ -29,9 +31,7 @@ export class Scenery {
     box1.position.set(pos1.x, pos1.y, pos1.z);
     box1.rotation.y = 352;
     this.scene.add(box1);
+  };
 
-  }
-
-  public addObject = (position: LngLat | Vector3) => {
-  }
+  public addObject = (position: LngLat | Vector3) => {};
 }
