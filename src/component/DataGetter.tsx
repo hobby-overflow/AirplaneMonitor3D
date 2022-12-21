@@ -75,31 +75,6 @@ export class DataGetter extends React.Component<
       })
       .finally(() => this.isReqestSending = false)
     }
-
-    /*
-    fetch(addr, { method: 'GET' })
-      .then((response) => response.json())
-      .then((json) =>
-        this.setState({
-          acList: json.acList,
-          statusCode: 0,
-          statusMessage: 'Data receving',
-        })
-      )
-      .catch((error) => {
-        if (this.signalSimulateMode === true) {
-          this.setState({
-            statusCode: 1,
-            statusMessage: "Can't access SignalSimulator...",
-          });
-        } else {
-          this.setState({
-            statusCode: 1,
-            statusMessage: "Can't access Virtual Radar Server...",
-          });
-        }
-      });
-    */
   };
 
   render = () => {
