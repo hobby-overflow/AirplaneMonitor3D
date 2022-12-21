@@ -53,14 +53,16 @@ export class AircraftTable extends React.Component<
     var acTable = new Array<ReactElement>();
 
     const hasLocation = (ac: Aircraft) => {
-      if (ac == null) return '❌';
-      if (ac.info.Long == null) return '❌';
-      if (ac.info.Lat == null) return '❌';
-      if (ac.info.Alt == null) return '❌';
-      if (ac.info.Trak == null) return '❌';
+      // if (ac == null) return '❌';
+      if (ac == null) return 'x';
+      if (ac.info.Long == null) return 'x';
+      if (ac.info.Lat == null) return 'x';
+      if (ac.info.Alt == null) return 'x';
+      if (ac.info.Trak == null) return 'x';
 
       // return true;
-      return '✅';
+      // return '✅';
+      return 'o';
     };
 
     Object.values(this.acDataBase).forEach((item) => {
