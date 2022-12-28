@@ -1,30 +1,25 @@
-import React, {useEffect, useState} from "react"
+import React, { useEffect } from 'react';
 
 export const StatusMonitorHooks = (props: any) => {
-  let elementId = 'statusMonitor';
-  let isFirst = true;
+  const elementId = 'statusMonitor';
 
   useEffect(() => {
-    if (isFirst) {
-      const elem = document.getElementById(elementId) as HTMLParagraphElement;
-      elem.style.visibility = 'collapse';
-      isFirst = false;
-    }
+    const elem = document.getElementById(elementId);
 
-    if (!isFirst) {
-      const elem = document.getElementById(elementId) as HTMLParagraphElement;
-      elem.style.visibility = 'visible';
-      if (elem != null) {
-        if (props.statusCode == 0) {
-          elem.style.color = 'darkgreen';
-        } else {
-          elem.style.color = 'red';
-        }
-      }
+    if (elem != null) {
+      props.statusMessage == ''
+        ? (elem.style.visibility = 'collapse')
+        : (elem.style.visibility = 'visible');
+
+      props.statusCode == 0
+        ? (elem.style.color = 'darkgreen')
+        : (elem.style.color = 'red');
     }
   });
 
   return (
-    <p id={elementId}>{props.statusMessage}</p>
-  )
-}
+    <p id={elementId} style={{ visibility: 'collapse' }}>
+      {props.statusMessage}
+    </p>
+  );
+};
