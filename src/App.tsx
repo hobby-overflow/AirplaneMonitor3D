@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { DataGetter } from './component/DataGetter';
+import { DataGetterHooks } from './component/DataGetterHooks';
 
 import './web/index.css';
 
@@ -10,7 +10,7 @@ const App = (): JSX.Element => {
       {/* <ThreeSample scale={300} /> */}
       {/* <PixiSample /> */}
       {/* <MapViewer /> */}
-      <DataGetter />
+      <DataGetterHooks />
     </>
   );
 };
