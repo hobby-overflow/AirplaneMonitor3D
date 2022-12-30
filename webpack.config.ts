@@ -43,7 +43,7 @@ const config: Configuration = {
          * node_modules ディレクトリは除外する
          */
         test: /\.tsx?$/,
-        exclude: /node_modules/,
+        exclude: /node_modules|\.tsx\.bak/,
         use: 'ts-loader',
       },
       {
