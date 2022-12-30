@@ -1,36 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-export class StatusMonitor extends React.Component<
-  { statusCode: number; statusMessage: string },
-  {}
-> {
-  constructor(props: any) {
-    super(props);
-  }
+export const StatusMonitorHooks = (props: any) => {
+  const elementId = 'statusMonitor';
 
-  private elementId = 'statusMonitor';
+  useEffect(() => {
+    const elem = document.getElementById(elementId);
 
-  private getElement() {
-    return document.getElementById(this.elementId) as HTMLParagraphElement;
-  }
-  componentDidMount = () => {
-    let elem = this.getElement();
-    elem.style.visibility = 'collapse';
-  };
-  componentDidUpdate = () => {
-    let elem = this.getElement();
-    elem.style.visibility = 'visible';
     if (elem != null) {
-      if (this.props.statusCode == 0) {
-        elem.style.color = 'darkgreen';
-      }
-      if (this.props.statusCode != 0) {
-        elem.style.color = 'red';
-      }
-    }
-  };
+      props.statusMessage == ''
+        ? (elem.style.visibility = 'collapse')
+        : (elem.style.visibility = 'visible');
 
-  render() {
-    return <p id={this.elementId}>{this.props.statusMessage}</p>;
-  }
-}
+      props.statusCode == 0
+        ? (elem.style.color = 'darkgreen')
+        : (elem.style.color = 'red');
+    }
+  });
+
+  return (
+    <p id={elementId} style={{ visibility: 'collapse' }}>
+      {props.statusMessage}
+    </p>
+  );
+};

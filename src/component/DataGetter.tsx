@@ -1,92 +1,49 @@
-import React from 'react';
 import axios from 'axios';
-import { AircraftDatabase } from './AircraftDatabase';
+import React, { useEffect, useState } from 'react';
 import { AircraftList } from '../class/AircraftList';
-import { StatusMonitor } from './StatusMonitor';
+import { AircraftDatabase } from './AircraftDatabase';
+import { StatusMonitorHooks } from './StatusMonitorHooks';
 
-export class DataGetter extends React.Component<
-  {},
-  { acList: any; statusCode: number; statusMessage: string }
-> {
-  private intervalID: any;
-  private config!: Config;
+const useInterval = (callback: Function, delay?: number) => {
+  useEffect(() => {
+    const intervalId = setInterval(() => callback(), delay || 0);
+    return () => clearInterval(intervalId);
+  }, [callback, delay]);
+};
 
-  private signalSimulateMode!: boolean;
+export const DataGetterHooks = () => {
+  const [acList, setAcList] = useState();
+  const [statusCode, setStatusCode] = useState(0);
+  const [statusMessage, setStatusMessage] = useState('');
 
-  private isReqestSending = false;
+  let isRequestSending = false;
 
-  constructor(props: any) {
-    super(props);
-    this.state = { acList: null, statusCode: 0, statusMessage: '' };
-  }
-
-  init = async () => {
-    await window.api.send('read_config', null);
-    await window.api.on('read_config', (arg: string) => {
-      if (arg != null) {
-        this.config = JSON.parse(arg) as Config;
-        this.signalSimulateMode = this.config.mode.simulation;
-      }
-    });
-    // この書き方の参考URL: https://ja.reactjs.org/docs/state-and-lifecycle.html
-    this.intervalID = setInterval(() => this.tick(), 1000);
-    console.log('setInterval in init()');
-  };
-
-  componentDidMount = () => {
-    console.log('DataGetter didMount!!');
-    this.init();
-  };
-
-  componentWillUnmount = () => {
-    clearInterval(this.intervalID);
-  };
-
-  tick = () => {
-    let addr: string;
-    if (this.signalSimulateMode === true) {
-      addr = this.config.access_url.simulate;
-    } else {
-      addr = this.config.access_url.realtime;
-    }
-
-    if (this.isReqestSending == false) {
-      this.isReqestSending = true;
+  useInterval(() => {
+    let url = 'http://localhost:8080/json';
+    if (isRequestSending == false) {
+      isRequestSending = true;
       axios
-        .get(addr)
+        .get(url)
         .then((response) => {
-          this.setState({
-            acList: response.data.acList,
-            statusCode: 0,
-            statusMessage: 'Data receving',
-          });
+          setStatusCode(0);
+          setStatusMessage('Data receiving');
+          setAcList(response.data.acList);
         })
-        .catch((error) => {
-          if (this.signalSimulateMode === true) {
-            this.setState({
-              statusCode: 1,
-              statusMessage: "Can't access SignalSimulator...",
-            });
-          } else {
-            this.setState({
-              statusCode: 1,
-              statusMessage: "Can't access Virtual Radar Server...",
-            });
-          }
+        .catch(() => {
+          setStatusCode(1);
+          setStatusMessage("Can't access data...");
         })
-        .finally(() => (this.isReqestSending = false));
+        .finally(() => (isRequestSending = false));
     }
-  };
+  }, 1000);
 
-  render = () => {
-    return (
-      <>
-        <AircraftDatabase acList={new AircraftList(this.state.acList)} />
-        <StatusMonitor
-          statusCode={this.state.statusCode}
-          statusMessage={this.state.statusMessage}
-        />
-      </>
-    );
-  };
-}
+  return (
+    <>
+      <StatusMonitorHooks
+        statusCode={statusCode}
+        statusMessage={statusMessage}
+      />
+      <AircraftDatabase acList={new AircraftList(acList)} />
+    </>
+  );
+};
