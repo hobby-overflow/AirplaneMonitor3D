@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-export const StatusMonitorHooks = (props: any) => {
+export const StatusMonitor = (props: any) => {
   const elementId = 'statusMonitor';
 
   useEffect(() => {

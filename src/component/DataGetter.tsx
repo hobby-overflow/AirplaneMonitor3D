@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { AircraftList } from '../class/AircraftList';
 import { AircraftDatabase } from './AircraftDatabase';
-import { StatusMonitorHooks } from './StatusMonitorHooks';
+import { StatusMonitor } from './StatusMonitor';
 
 const useInterval = (callback: Function, delay?: number) => {
   useEffect(() => {
@@ -11,7 +11,7 @@ const useInterval = (callback: Function, delay?: number) => {
   }, [callback, delay]);
 };
 
-export const DataGetterHooks = () => {
+export const DataGetter = () => {
   const [acList, setAcList] = useState();
   const [statusCode, setStatusCode] = useState(0);
   const [statusMessage, setStatusMessage] = useState('');
@@ -39,10 +39,7 @@ export const DataGetterHooks = () => {
 
   return (
     <>
-      <StatusMonitorHooks
-        statusCode={statusCode}
-        statusMessage={statusMessage}
-      />
+      <StatusMonitor statusCode={statusCode} statusMessage={statusMessage} />
       <AircraftDatabase acList={new AircraftList(acList)} />
     </>
   );
