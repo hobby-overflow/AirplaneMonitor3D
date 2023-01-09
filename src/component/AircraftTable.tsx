@@ -46,6 +46,7 @@ export class AircraftTable extends React.Component<
 
     this.props.updateAcList.forEach((item) => {
       this.acDataBase[item.info.Icao] = item;
+      console.log(item.info.Reg);
     });
   }
 

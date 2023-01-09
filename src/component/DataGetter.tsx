@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { AircraftList } from '../class/AircraftList';
+import { AcDatabaseHooks } from './acDatabaseHooks';
 import { AircraftDatabase } from './AircraftDatabase';
 import { StatusMonitor } from './StatusMonitor';
 
@@ -40,7 +41,7 @@ export const DataGetter = () => {
   return (
     <>
       <StatusMonitor statusCode={statusCode} statusMessage={statusMessage} />
-      <AircraftDatabase acList={new AircraftList(acList)} />
+      <AcDatabaseHooks acList={new AircraftList(acList)} />
     </>
   );
 };
