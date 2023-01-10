@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Aircraft } from '../class/Aircraft';
 import { AircraftList } from '../class/AircraftList';
 import { Aircraft3DViewer } from './Aircraft3DViewer';
@@ -10,9 +10,9 @@ export const AcDatabaseHooks = (props: any) => {
 
   const aircraftDatabase: { [key: string]: Aircraft } = {};
 
-  let addAcList = new Array<Aircraft>();
-  let updateAcList = new Array<Aircraft>();
-  let removeAcList = new Array<Aircraft>();
+  const [addAcList] = useState(new Array<Aircraft>());
+  const [updateAcList] = useState(new Array<Aircraft>());
+  const [removeAcList] = useState(new Array<Aircraft>());
 
   const isDuplicated = (ac: Aircraft): boolean => {
     return receivedAircraft.has(ac.info.Icao);
@@ -33,10 +33,6 @@ export const AcDatabaseHooks = (props: any) => {
     props.acList.acList.forEach((item: Aircraft) => {
       syncData(item);
     });
-
-    addAcList = [];
-    updateAcList = [];
-    removeAcList = [];
 
     props.acList.acList.forEach((item: Aircraft) => {
       syncData(item);
