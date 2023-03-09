@@ -46,7 +46,6 @@ export class AircraftTable extends React.Component<
 
     this.props.updateAcList.forEach((item) => {
       this.acDataBase[item.info.Icao] = item;
-      console.log(item.info.Reg);
     });
   }
 
@@ -55,11 +54,11 @@ export class AircraftTable extends React.Component<
 
     const hasLocation = (ac: Aircraft) => {
       // if (ac == null) return '❌';
-      if (ac == null) return 'x';
-      if (ac.info.Long == null) return 'x';
-      if (ac.info.Lat == null) return 'x';
-      if (ac.info.Alt == null) return 'x';
-      if (ac.info.Trak == null) return 'x';
+      if (ac == null) return ' ';
+      if (ac.info.Long == null) return ' ';
+      if (ac.info.Lat == null) return ' ';
+      if (ac.info.Alt == null) return ' ';
+      if (ac.info.Trak == null) return ' ';
 
       // return true;
       // return '✅';
