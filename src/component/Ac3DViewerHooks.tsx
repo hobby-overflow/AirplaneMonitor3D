@@ -1,9 +1,16 @@
 import React, { useEffect } from 'react';
 import * as THREE from 'three';
+import { Aircraft } from '../class/Aircraft';
 
 // import SkyPanoramic from '../assets/SkyPanoramic_mini.png';
 
-export function Ac3DViewer() {
+type Ac3DViewerProps = {
+  addAcList: Array<Aircraft>;
+  updateAcList: Array<Aircraft>;
+  removeAcList: Array<Aircraft>;
+};
+
+export function Ac3DViewer(props: Ac3DViewerProps) {
   useEffect(() => {
     init();
   }, []);
@@ -39,11 +46,15 @@ export function Ac3DViewer() {
     const box = new THREE.Mesh(boxGeometry, boxMaterial);
     scene.add(box);
 
+    const clock = new THREE.Clock();
     function tick() {
+      const targetFps = 60;
       setTimeout(() => {
         requestAnimationFrame(() => tick());
-      }, 1000 / 30);
-      box.position.x += (1000 / 30) * 0.0001;
+      }, 1000 / targetFps);
+      const delta = clock.getDelta()
+      box.rotation.y += delta * 0.5
+      box.rotation.z += delta * 0.25
       renderer.render(scene, camera);
     }
     tick();

@@ -1,47 +1,74 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Aircraft } from '../class/Aircraft';
-import { AircraftList } from '../class/AircraftList';
-import { Aircraft3DViewer } from './Aircraft3DViewer';
+// import { AircraftList } from '../class/AircraftList';
+import { Ac3DViewer } from './Ac3DViewerHooks';
+// import { Aircraft3DViewer } from './Aircraft3DViewer';
 import { AircraftTable } from './AircraftTable';
 
 // ここがコントローラーを担うことになってしまった
 export const AcDatabaseHooks = (props: any) => {
-  const receivedAircraft = new Set<string>();
+  const receivedAircraft = useRef(new Set<string>());
 
-  const aircraftDatabase: { [key: string]: Aircraft } = {};
+  const Database: { [key: string]: Aircraft } = {};
+  const [aircraftDatabase] = useState(Database);
 
   const [addAcList] = useState(new Array<Aircraft>());
   const [updateAcList] = useState(new Array<Aircraft>());
   const [removeAcList] = useState(new Array<Aircraft>());
 
+  function clearList(list: object[]) {
+    list.length = 0;
+  }
+
   const isDuplicated = (ac: Aircraft): boolean => {
-    return receivedAircraft.has(ac.info.Icao);
+    // console.log(receivedAircraft.current.size)
+    return receivedAircraft.current.has(ac.info.Icao);
   };
 
   const syncData = (ac: Aircraft) => {
-    if (isDuplicated(ac) == true) {
+    if (isDuplicated(ac)) {
       aircraftDatabase[ac.info.Icao] = ac;
       updateAcList.push(ac);
     } else {
       aircraftDatabase[ac.info.Icao] = ac;
       addAcList.push(ac);
-      receivedAircraft.add(ac.info.Icao);
+      receivedAircraft.current.add(ac.info.Icao);
     }
   };
 
   useEffect(() => {
-    props.acList.acList.forEach((item: Aircraft) => {
-      syncData(item);
-    });
+    // updateAcList, removeAcList is empty...
+    clearList(addAcList);
+    clearList(updateAcList);
+    clearList(removeAcList);
 
     props.acList.acList.forEach((item: Aircraft) => {
       syncData(item);
     });
 
     Object.values(aircraftDatabase).forEach((item) => {
+      if (item.isTimeout()) {
+        console.log(`removeAc: ${item.info.Reg}`);
+        removeAcList.push(item);
+      }
+    });
+
+    let debugMsg =
+      '' +
+      `addAcList ${addAcList.length}\n` +
+      `updateAcList ${updateAcList.length}\n` +
+      `removeAcList ${removeAcList.length}`;
+    console.log(debugMsg);
+
+    // Why duplicate code ???
+    // props.acList.acList.forEach((item: Aircraft) => {
+    //   syncData(item);
+    // });
+
+    Object.values(aircraftDatabase).forEach((item) => {
       if (item.isTimeout() == true) {
         delete aircraftDatabase[item.info.Icao];
-        receivedAircraft.delete(item.info.Icao);
+        receivedAircraft.current.delete(item.info.Icao);
         removeAcList.push(item);
       }
     });
@@ -49,13 +76,11 @@ export const AcDatabaseHooks = (props: any) => {
 
   return (
     <>
-    {/*
-      <Aircraft3DViewer
+      <Ac3DViewer
         addAcList={addAcList}
         updateAcList={updateAcList}
         removeAcList={removeAcList}
       />
-      */}
       <AircraftTable
         addAcList={addAcList}
         updateAcList={updateAcList}
