@@ -12,7 +12,7 @@
     "dev": "run-p dev:*",
     "dev:electron": "wait-on ./dist/index.html && electron .",
     "dev:tsc": "tsc -w -p tsconfig.main.json",
-    "dev:webpack": "NODE_OPTIONS=--openssl-legacy-provider webpack --watch",
+    "dev:webpack": "webpack --watch",
     "run": "run-p run:*",
     "run:electron": "wait-on ./dist/index.html && electron . --no-sandbox",
     "run:tsc": "tsc -p tsconfig.main.json",
