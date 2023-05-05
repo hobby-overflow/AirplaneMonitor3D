@@ -40,7 +40,6 @@
     "three": "^0.132.2"
   },
   "devDependencies": {
-    "@craftamap/esbuild-plugin-html": "^0.4.0",
     "@types/copy-webpack-plugin": "^8.0.1",
     "@types/mapbox-gl": "^2.7.2",
     "@types/mini-css-extract-plugin": "^2.3.0",
@@ -57,7 +56,6 @@
     "electron-packager": "^15.5.1",
     "electron-reload": "^2.0.0-alpha.1",
     "electron-search-devtools": "^1.5.1",
-    "esbuild": "^0.15.5",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.3",
