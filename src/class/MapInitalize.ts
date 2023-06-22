@@ -23,7 +23,7 @@ export const MapInitialize = () => {
     zoom: 16,
     antialias: true,
     style: satellite,
-    accessToken: Config.map.api_id,
+    accessToken: TOKEN
   });
   return map;
 };

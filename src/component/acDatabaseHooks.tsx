@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Aircraft } from '../class/Aircraft';
 // import { AircraftList } from '../class/AircraftList';
-import { Ac3DViewer } from './Ac3DViewerHooks';
+// import { Ac3DViewer } from './Ac3DViewerHooks';
 // import { Aircraft3DViewer } from './Aircraft3DViewer';
 import { AircraftTable } from './AircraftTable';
+import { MapHooks } from './MapHooks';
 
 // ここがコントローラーを担うことになってしまった
 export const AcDatabaseHooks = (props: any) => {
@@ -53,12 +54,12 @@ export const AcDatabaseHooks = (props: any) => {
       }
     });
 
-    let debugMsg =
-      '' +
-      `addAcList ${addAcList.length}\n` +
-      `updateAcList ${updateAcList.length}\n` +
-      `removeAcList ${removeAcList.length}`;
-    console.log(debugMsg);
+    // let debugMsg =
+    //   '' +
+    //   `addAcList ${addAcList.length}\n` +
+    //   `updateAcList ${updateAcList.length}\n` +
+    //   `removeAcList ${removeAcList.length}`;
+    // console.log(debugMsg);
 
     // Why duplicate code ???
     // props.acList.acList.forEach((item: Aircraft) => {
@@ -76,7 +77,15 @@ export const AcDatabaseHooks = (props: any) => {
 
   return (
     <>
+      {/*
       <Ac3DViewer
+        addAcList={addAcList}
+        updateAcList={updateAcList}
+        removeAcList={removeAcList}
+      />
+      */}
+
+      <MapHooks
         addAcList={addAcList}
         updateAcList={updateAcList}
         removeAcList={removeAcList}

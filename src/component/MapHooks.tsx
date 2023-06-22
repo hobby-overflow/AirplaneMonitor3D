@@ -53,6 +53,12 @@ export function MapHooks(props: MapHooks) {
     Object.values(props.addAcList).forEach((ac) => {
       if (hasLocation(ac)) scenery.current?.setLocation(ac);
     });
+    Object.values(props.updateAcList).forEach((ac) => {
+      if (hasLocation(ac)) scenery.current?.setLocation(ac);
+    });
+    Object.values(props.removeAcList).forEach((ac) => {
+      scenery.current?.removeAircraft(ac);
+    });
   });
 
   return <div id="mapContainer"></div>;
